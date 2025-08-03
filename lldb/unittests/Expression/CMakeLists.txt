@@ -1,0 +1,21 @@
+add_lldb_unittest(ExpressionTests
+  ClangParserTest.cpp
+  ClangExpressionDeclMapTest.cpp
+  DiagnosticManagerTest.cpp
+  DWARFExpressionTest.cpp
+  CppModuleConfigurationTest.cpp
+  ExpressionTest.cpp
+
+  LINK_LIBS
+    lldbCore
+    lldbPluginObjectFileELF
+    lldbPluginObjectFileWasm
+    lldbPluginSymbolVendorWasm
+    lldbPluginPlatformLinux
+    lldbPluginExpressionParserClang
+    lldbPluginTypeSystemClang
+    lldbUtility
+    lldbUtilityHelpers
+    lldbSymbolHelpers
+    LLVMTestingSupport
+  )
