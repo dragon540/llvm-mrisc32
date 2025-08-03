@@ -51,6 +51,7 @@ StringRef Triple::getArchTypeName(ArchType Kind) {
   case mips64el:       return "mips64el";
   case mips:           return "mips";
   case mipsel:         return "mipsel";
+  case mrisc32:        return "mrisc32";
   case msp430:         return "msp430";
   case nvptx64:        return "nvptx64";
   case nvptx:          return "nvptx";
@@ -971,6 +972,7 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::mips64:
   case Triple::mips64el:
   case Triple::mips:
+  case Triple::mrisc32:
   case Triple::msp430:
   case Triple::nvptx64:
   case Triple::nvptx:
@@ -1699,6 +1701,7 @@ unsigned Triple::getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::m68k:
   case llvm::Triple::mips:
   case llvm::Triple::mipsel:
+  case llvm::Triple::mrisc32:
   case llvm::Triple::nvptx:
   case llvm::Triple::ppc:
   case llvm::Triple::ppcle:
@@ -1809,6 +1812,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::m68k:
   case Triple::mips:
   case Triple::mipsel:
+  case Triple::mrisc32:
   case Triple::nvptx:
   case Triple::ppc:
   case Triple::ppcle:
@@ -1875,6 +1879,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::kalimba:
   case Triple::lanai:
   case Triple::m68k:
+  case Triple::mrisc32:
   case Triple::msp430:
   case Triple::r600:
   case Triple::shave:
@@ -2079,6 +2084,7 @@ bool Triple::isLittleEndian() const {
   case Triple::loongarch64:
   case Triple::mips64el:
   case Triple::mipsel:
+  case Triple::mrisc32:
   case Triple::msp430:
   case Triple::nvptx64:
   case Triple::nvptx:
