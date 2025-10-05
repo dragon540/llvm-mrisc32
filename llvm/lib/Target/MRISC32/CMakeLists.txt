@@ -10,12 +10,14 @@ tablegen(LLVM MRISC32GenInstrInfo.inc          -gen-instr-info)
 add_public_tablegen_target(MRISC32CommonTableGen)
 
 add_llvm_target(MRISC32CodeGen
+        MRISC32AsmPrinter.cpp
         MRISC32InstrInfo.cpp
         MRISC32RegisterInfo.cpp
         MRISC32FrameLowering.cpp
         MRISC32ISelLowering.cpp
         MRISC32Subtarget.cpp
         MRISC32TargetMachine.cpp
+        MRISC32CallLowering.cpp
 
         LINK_COMPONENTS
         AsmPrinter

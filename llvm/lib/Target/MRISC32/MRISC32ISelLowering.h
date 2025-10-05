@@ -12,7 +12,7 @@ namespace llvm
 {
 class MRISC32Subtarget;
 
-class MRISC32TragetLowering : public TargetLowering {
+class MRISC32TargetLowering : public TargetLowering {
 public:
   explicit MRISC32TargetLowering(const TargetMachine &TM, const MRISC32Subtarget &STI);
 };

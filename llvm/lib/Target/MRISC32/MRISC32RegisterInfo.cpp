@@ -13,11 +13,15 @@ MRISC32RegisterInfo::MRISC32RegisterInfo()
     : MRISC32GenRegisterInfo() {}
 
 const MCPhysReg *MRISC32RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) {
-    return CSR_SaveList;
+    static const MCPhysReg CalleeSavedRegs[] = { 0 }; // Terminator
+    return CalleeSavedRegs;
 }
 
 BitVector MRISC32RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
-
+    BitVector Reserved(getNumRegs());
+    // Example: Reserve R0 if R0 is hardwired to zero
+    Reserved.set(MRISC32::R0); 
+    return Reserved;
 }
 
 Register MRISC32RegisterInfo::getFrameRegister(const MachineFunction &MF) const {
@@ -28,6 +32,9 @@ bool MRISC32RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator MI, in
                                               unsigned FIOperandNum,
                                               RegScavenger *RS = nullptr) const {
 
-                                              }
+    // For now: leave unimplemented stub that returns false
+    llvm_unreachable("eliminateFrameIndex not yet implemented");
+    return false;
+}
 
 

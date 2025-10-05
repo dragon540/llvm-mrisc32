@@ -3,6 +3,11 @@
 //
 
 #include "MRISC32TargetMachine.h"
+#include "llvm/CodeGen/GlobalISel/IRTranslator.h"
+#include "llvm/CodeGen/GlobalISel/InstructionSelect.h"
+#include "llvm/CodeGen/GlobalISel/Legalizer.h"
+#include "llvm/CodeGen/GlobalISel/RegBankSelect.h"
+#include "llvm/CodeGen/TargetPassConfig.h"
 
 MRISC32TargetMachine::MRISC32TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                        StringRef FS, const TargetOptions &Options,
@@ -22,4 +27,24 @@ TargetPassConfig* MRISC32TargetMachine::createPassConfig(PassManagerBase &PM) {
 
 TargetTransformInfo MRISC32TargetMachine::getTargetTransformInfo(const Function &F) const {
     return TargetTransformInfo(std::make_unique<MRISC32TTIImpl>(this, F));
+}
+  
+bool MRISC32PassConfig::addIRTranslator() {
+    addPass(new IRTranslator(getOptLevel()));
+    return false;
+}
+  
+bool MRISC32PassConfig::addLegalizeMachineIR() {
+    addPass(new Legalizer());
+    return false;
+}
+  
+bool MRISC32PassConfig::addRegBankSelect() {
+    addPass(new RegBankSelect());
+    return false;
+}
+  
+bool MRISC32PassConfig::addGlobalInstructionSelect() {
+    addPass(new InstructionSelect(getOptLevel()));
+    return false;
 }

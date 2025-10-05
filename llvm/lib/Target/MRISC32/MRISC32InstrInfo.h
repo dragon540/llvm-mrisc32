@@ -14,7 +14,7 @@ namespace llvm
 {
 class MRISC32InstrInfo : public MRISC32GenInstrInfo {
   public:
-    MRISC32InstrInfo();
+    MRISC32InstrInfo(const MRISC32RegisterInfo &RI);
 
     const MRISC32RegisterInfo &getRegisterInfo() const {
       return RI;

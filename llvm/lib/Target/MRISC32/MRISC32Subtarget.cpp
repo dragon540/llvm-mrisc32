@@ -15,17 +15,31 @@ using namespace llvm;
 MRISC32Subtarget::MRISC32Subtarget(const Triple &TT, const std::string &CPU,
                        const std::string &FS, const TargetMachine &TM) :
          MRISC32GenSubtargetInfo(TT, CPU, FS),
+         RegisterInfo(*this),
          InstrInfo(*this),
          FrameLowering(*this),
          TLInfo(TM, *this),
-         RegInfo(*this)
 {
     initializeSubtargetFeatures(StringRef CPU, StringRef FS) {
 }
 
 
 void MRISC32Subtarget::initializeSubtargetFeatures(StringRef CPU, StringRef FS) {
-    // For now, nothing special — later you can parse CPU and features here
+    // For now, nothing special — can later parse CPU and features here
 }
 
+const MRISC32Subtarget::MRISC32RegisterInfo *getRegisterInfo() {
+    return &RegisterInfo;
+}
 
+const MRISC32Subtarget::MRISC32InstrInfo *getInstrInfo() {
+    return &InstrInfo;
+}
+
+const MRISC32Subtarget::MRISC32FrameLowering *getFrameLowering() {
+    return &FL;
+}
+
+const MRISC32Subtarget::MRISC32TargetLowering *getTargetLowering() {
+    return &TL;
+}

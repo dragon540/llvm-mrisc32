@@ -15,6 +15,6 @@ MRISC32TargetLowering::MRISC32TargetLowering(const TargetMachine &TM,
   // Tell LLVM that load/store/add/sub are legal in GlobalISel.
   // (You’ll extend this later.)
   setOperationAction(ISD::ADD, MVT::i32, Legal);
-  setOperationAction(ISD::SUB, MVT::i32, Legal);
+  //setOperationAction(ISD::SUB, MVT::i32, Legal);
 }
 
