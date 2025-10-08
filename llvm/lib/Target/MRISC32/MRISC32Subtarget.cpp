@@ -18,9 +18,15 @@ MRISC32Subtarget::MRISC32Subtarget(const Triple &TT, const std::string &CPU,
          RegisterInfo(*this),
          InstrInfo(*this),
          FrameLowering(*this),
-         TLInfo(TM, *this),
-{
-    initializeSubtargetFeatures(StringRef CPU, StringRef FS) {
+         TLInfo(TM, *this) {
+
+        CallLoweringInfo.reset(new BPFCallLowering(*getTargetLowering()));
+        Legalizer.reset(new BPFLegalizerInfo(*this));
+         auto *RBI = new BPFRegisterBankInfo(*getRegisterInfo());
+        RegBankInfo.reset(RBI);
+
+        InstSelector.reset(createBPFInstructionSelector(
+            *static_cast<const BPFTargetMachine *>(&TM), *this, *RBI));
 }
 
 
@@ -42,4 +48,20 @@ const MRISC32Subtarget::MRISC32FrameLowering *getFrameLowering() {
 
 const MRISC32Subtarget::MRISC32TargetLowering *getTargetLowering() {
     return &TL;
+}
+
+const CallLowering *MRISC32Subtarget::getCallLowering() const {
+  return CallLoweringInfo.get();
+}
+
+const LegalizerInfo *MRISC32Subtarget::getLegalizerInfo() const {
+  return Legalizer.get();
+}
+
+const RegisterBankInfo *MRISC32Subtarget::getRegBankInfo() const {
+  return RegBankInfo.get();
+}
+
+InstructionSelector *MRISC32Subtarget::getInstructionSelector() const {
+  return InstSelector.get();
 }
