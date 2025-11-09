@@ -6,6 +6,10 @@ include "llvm/Target/Target.td"
 
 include "MRISC32RegisterInfo.td"
 include "MRISC32InstrInfo.td"
+include "MRISC32RegisterBanks.td"
+//include "MRISC32Subtarget.td"
+//include "MRISC32Sched.td"
+
 
 def MRISC32InstrInfo : InstrInfo;
 

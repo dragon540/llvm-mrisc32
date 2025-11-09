@@ -5,6 +5,7 @@ set(LLVM_TARGET_DEFINITIONS MRISC32.td)
 tablegen(LLVM MRISC32GenRegisterInfo.inc       -gen-register-info)
 tablegen(LLVM MRISC32GenInstrInfo.inc          -gen-instr-info)
 tablegen(LLVM MRISC32GenGlobalISel.inc         -gen-global-isel)
+tablegen(LLVM MRISC32GenRegisterBank.inc       -gen-register-bank)
 #tablegen(LLVM MRISC32GenSubtargetInfo.inc     -gen-subtarget)
 #tablegen(LLVM MRISC32GenMCCodeEmitter.inc     -gen-emitter)
 
