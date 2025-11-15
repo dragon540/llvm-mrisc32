@@ -12,6 +12,9 @@ class MRISC32Inst<dag outs, dag ins, string asmString> : Instruction {
 def ADD : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
                       "ADD $dst, $src1, $src2">;
+def : Pat<(add GPR:$src1, GPR:$src2),
+          (ADD GPR:$src1, GPR:$src2)>;
+def : GINodeEquiv<G_ADD, add>;
 
 def SUB : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
@@ -34,7 +37,6 @@ def MIN : MRISC32Inst<(outs GPR:$dst),
 def MAX : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
                       "MAX $dst, $src1, $src2">;
-
 
 //def LDri : 
 //def STri : 

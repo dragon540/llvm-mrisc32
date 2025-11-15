@@ -54,7 +54,7 @@ bool MRISC32CallLowering::lowerFormalArguments(MachineIRBuilder &MIRBuilder, con
                 ++i;
         }
 
-                // Copy from physical registers to virtual ones (the function’s args)
+        // Copy from physical registers to virtual ones (the function’s args)
         for (unsigned i = 0; i < ArgLocs.size(); ++i) {
                 CCValAssign &VA = ArgLocs[i];
                 assert(VA.isRegLoc() && "Only register args supported for now!");

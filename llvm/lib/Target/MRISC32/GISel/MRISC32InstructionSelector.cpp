@@ -5,7 +5,7 @@
 #include "llvm/CodeGen/GlobalISel/InstructionSelector.h"
 #include "llvm/Support/Debug.h"
 
-#define DEBUG_TYPE "m68k-isel"
+#define DEBUG_TYPE "mrisc32-isel"
 
 using namespace llvm;
 
