@@ -4,7 +4,7 @@
 
 class MRISC32Reg<bits<5> Enc, string n> : Register<n> {
     let HWEncoding{4-0} = Enc;
-    let Namespace  = "mrisc32";
+    let Namespace  = "MRISC32";
 }
 
 foreach I = 0-31 in {
@@ -14,10 +14,11 @@ foreach I = 0-31 in {
 
 class MRISC32RegisterClass<list<ValueType> types, int size, int alignment,
                             dag regList, int copycost = 1>
-                           : RegisterClass<"mrisc32", types, alignment, regList> {
+                           : RegisterClass<"MRISC32", types, alignment, regList> {
 
         let Size = size;
         let CopyCost = copycost;
+        let Namespace = "MRISC32";
 }
 
 def GPR : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "R%u", 0, 31))>;

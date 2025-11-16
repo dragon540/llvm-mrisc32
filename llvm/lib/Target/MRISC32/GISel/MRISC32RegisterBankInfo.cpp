@@ -13,6 +13,8 @@
 
 using namespace llvm;
 
+namespace llvm {
+namespace MRISC32 {
 const MRISC32RegisterBankInfo::PartialMapping PartMappings[] = {
     {0, 32, GPRBRegBank}
 };
@@ -33,6 +35,8 @@ enum ValueMappingIdx {
   InvalidIdx = 0,
   GPRB32Idx = 1
 };
+}
+}
 
 MRISC32RegisterBankInfo::MRISC32RegisterBankInfo(const TargetRegisterInfo &TRI) 
     : MRISC32RegisterBankInfo() {}
@@ -95,10 +99,10 @@ const RegisterBank &
         default:
             llvm_unreachable("Register class not supported");
         //case MRISC32::GPR16RegClassID:
-        case mrisc32::GPRRegClassID:
+        case MRISC32::GPRRegClassID:
         //case MRISC32::GPR16spRegClassID:
         //case MRISC32::OnlySPRegClassID:
-            return getRegBank(mrisc32::GPRRegBankID);
+            return getRegBank(MRISC32::GPRRegBankID);
         }
 };
 

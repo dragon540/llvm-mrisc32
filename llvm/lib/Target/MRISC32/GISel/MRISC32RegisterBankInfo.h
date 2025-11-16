@@ -1,5 +1,8 @@
 
 
+#ifndef LLVM_LIB_TARGET_MRISC32_GLSEL_MRISC32REGISTERBANKINFO_H
+#define LLVM_LIB_TARGET_MRISC32_GLSEL_MRISC32REGISTERBANKINFO_H
+
 #include "llvm/CodeGen/RegisterBankInfo.h"
 
 #define GET_REGBANK_DECLARATIONS
@@ -29,5 +32,5 @@ public:
         MRISC32RegisterBankInfo::getRegBankFromRegClass(const TargetRegisterClass &RC,
                                                     LLT Ty) const override;
 };
-
-}
+} // end namespace llvm
+#endif

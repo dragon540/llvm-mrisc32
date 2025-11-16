@@ -3,15 +3,21 @@
 //
 
 #include "MRISC32InstrInfo.h"
+#include "llvm/ADT/SmallVector.h"
+#include "llvm/CodeGen/MachineBasicBlock.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
-
-using namespace llvm;
+#include "llvm/IR/DebugLoc.h"
+#include "llvm/Support/ErrorHandling.h"
+#include <cassert>
+#include <iterator>
 
 #define GET_INSTRINFO_CTOR_DTOR
 #include "MRISC32GenInstrInfo.inc"
 
-MRISC32InstrInfo::MRISC32InstrInfo(const MRISC32RegisterInfo &RI)
-    : MRISC32GenInstrInfo(), RI(RI) {}
+using namespace llvm;
+
+MRISC32InstrInfo::MRISC32InstrInfo()
+    : MRISC32GenInstrInfo() {}
 
 void MRISC32InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
                                    MachineBasicBlock::iterator I,

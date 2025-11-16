@@ -2,8 +2,8 @@
 // Created by shobhit on 8/31/25.
 //
 
-#ifndef LLVM_MRISC32_MRISC32REGISTERINFO_H
-#define LLVM_MRISC32_MRISC32REGISTERINFO_H
+#ifndef LLVM_LIB_TARGET_MRISC32_MRISC32REGISTERINFO_H
+#define LLVM_LIB_TARGET_MRISC32_MRISC32REGISTERINFO_H
 
 #include "llvm/CodeGen/TargetRegisterInfo.h"
 
@@ -17,7 +17,7 @@ class MRISC32RegisterInfo : public MRISC32GenRegisterInfo
   public:
     MRISC32RegisterInfo();
 
-    const MCPhysReg *getCalleeSavedRegs(const MachineFunction *MF);
+    const MCPhysReg *getCalleeSavedRegs(const MachineFunction *MF) const override;
 
     BitVector getReservedRegs(const MachineFunction &MF) const override;
 
@@ -25,7 +25,7 @@ class MRISC32RegisterInfo : public MRISC32GenRegisterInfo
 
     bool eliminateFrameIndex(MachineBasicBlock::iterator MI, int SPAdj,
                            unsigned FIOperandNum,
-                           RegScavenger *RS = nullptr) const override;
+                           RegScavenger *RS) const override;
 };
 }
 

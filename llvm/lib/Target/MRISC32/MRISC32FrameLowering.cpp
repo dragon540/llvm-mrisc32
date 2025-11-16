@@ -13,3 +13,7 @@ void MRISC32FrameLowering::emitPrologue(MachineFunction &MF, MachineBasicBlock &
 void MRISC32FrameLowering::emitEpilogue(MachineFunction &MF, MachineBasicBlock &MBB) const {
     
 }
+
+bool MRISC32FrameLowering::hasFPImpl(const MachineFunction &MF) const {
+    return false;
+}

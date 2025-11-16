@@ -2,9 +2,10 @@
 // Created by shobhit on 8/31/25.
 //
 
-#ifndef LLVM_MRISC32_MRISC32INSTRINFO_H
-#define LLVM_MRISC32_MRISC32INSTRINFO_H
+#ifndef LLVM_LIB_TARGET_MRISC32_MRISC32INSTRINFO_H
+#define LLVM_LIB_TARGET_MRISC32_MRISC32INSTRINFO_H
 
+#include "MRISC32RegisterInfo.h"
 #include "llvm/CodeGen/TargetInstrInfo.h"
 
 #define GET_INSTRINFO_HEADER
@@ -13,8 +14,10 @@
 namespace llvm
 {
 class MRISC32InstrInfo : public MRISC32GenInstrInfo {
+  const MRISC32RegisterInfo RI;
+
   public:
-    MRISC32InstrInfo(const MRISC32RegisterInfo &RI);
+    MRISC32InstrInfo();
 
     const MRISC32RegisterInfo &getRegisterInfo() const {
       return RI;
