@@ -39,5 +39,9 @@ def MAX : MRISC32Inst<(outs GPR:$dst),
                       (ins GPR:$src1, GPR:$src2), 
                       "MAX $dst, $src1, $src2">;
 
-//def LDri : 
-//def STri : 
+def LDri : MRISC32Inst<(outs GPR:$dst), 
+                      (ins GPR:$src1, GPR:$src2), 
+                      "LDri $dst, $src1, $src2">;
+def STri : MRISC32Inst<(outs GPR:$dst), 
+                      (ins GPR:$src1, GPR:$src2), 
+                      "STri $dst, $src1, $src2">;

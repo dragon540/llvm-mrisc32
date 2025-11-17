@@ -103,7 +103,7 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeBPFTargetMC() {
   for (Target *T :
        {&getTheMRISC32leTarget(), &getTheMRISC32beTarget(), &getTheMRISC32Target()}) {
     // Register the MC asm info.
-    RegisterMCAsmInfo<MRISC32MCAsmInfo> X(*T);
+    //RegisterMCAsmInfo<MRISC32MCAsmInfo> X(*T);
 
     // Register the MC instruction info.
     TargetRegistry::RegisterMCInstrInfo(*T, createMRISC32MCInstrInfo);
@@ -116,28 +116,28 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeBPFTargetMC() {
                                             createMRISC32MCSubtargetInfo);
 
     // Register the object streamer
-    TargetRegistry::RegisterELFStreamer(*T, createMRISC32MCStreamer);
+    //TargetRegistry::RegisterELFStreamer(*T, createMRISC32MCStreamer);
 
     // Register the MCInstPrinter.
     TargetRegistry::RegisterMCInstPrinter(*T, createMRISC32MCInstPrinter);
 
     // Register the MC instruction analyzer.
-    TargetRegistry::RegisterMCInstrAnalysis(*T, createMRISC32InstrAnalysis);
+    //TargetRegistry::RegisterMCInstrAnalysis(*T, createMRISC32InstrAnalysis);
   }
 
   // Register the MC code emitter
-  TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32leTarget(),
-                                        createMRISC32MCCodeEmitter);
-  TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32beTarget(),
-                                        createMRISC32beMCCodeEmitter);
+  //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32leTarget(),
+  //                                      createMRISC32MCCodeEmitter);
+  //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32beTarget(),
+   //                                     createMRISC32beMCCodeEmitter);
 
   // Register the ASM Backend
-  TargetRegistry::RegisterMCAsmBackend(getTheMRISC32leTarget(),
-                                       createMRISC32AsmBackend);
-  TargetRegistry::RegisterMCAsmBackend(getTheMRISC32beTarget(),
-                                       createMRISC32beAsmBackend);
+  //TargetRegistry::RegisterMCAsmBackend(getTheMRISC32leTarget(),
+  //                                     createMRISC32AsmBackend);
+  //TargetRegistry::RegisterMCAsmBackend(getTheMRISC32beTarget(),
+  //                                     createMRISC32beAsmBackend);
 
-  if (sys::IsLittleEndianHost) {
+  /**if (sys::IsLittleEndianHost) {
     TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32Target(),
                                           createMRISC32MCCodeEmitter);
     TargetRegistry::RegisterMCAsmBackend(getTheMRISC32Target(),
@@ -147,5 +147,5 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeBPFTargetMC() {
                                           createMRISC32beMCCodeEmitter);
     TargetRegistry::RegisterMCAsmBackend(getTheMRISC32Target(),
                                          createMRISC32beAsmBackend);
-  }
+  }**/
 }

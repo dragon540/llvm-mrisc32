@@ -26,6 +26,8 @@ add_llvm_target(MRISC32CodeGen
         GISel/MRISC32LegalizerInfo.cpp
         GISel/MRISC32RegisterBankInfo.cpp
         GISel/MRISC32InstructionSelector.cpp
+        MCTargetDesc/MRISC32InstPrinter.cpp
+        MCTargetDesc/MRISC32MCTargetDesc.cpp
 
         LINK_COMPONENTS
         AsmPrinter

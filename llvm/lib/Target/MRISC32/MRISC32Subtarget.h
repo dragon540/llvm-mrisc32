@@ -23,7 +23,7 @@ class MRISC32Subtarget : public MRISC32GenSubtargetInfo {
       MRISC32RegisterInfo   RegisterInfo;
       MRISC32InstrInfo      InstrInfo;
       MRISC32FrameLowering  FL;
-      MRISC32TargetLowering TL;
+      //MRISC32TargetLowering TL;
 
    public:
       MRISC32Subtarget(const Triple &TT, const std::string &CPU,
@@ -38,7 +38,7 @@ class MRISC32Subtarget : public MRISC32GenSubtargetInfo {
 
       const MRISC32FrameLowering *getFrameLowering() const override;
 
-      const MRISC32TargetLowering *getTargetLowering() const override;
+      //const MRISC32TargetLowering *getTargetLowering() const override;
 
       const CallLowering *getCallLowering() const override;
 

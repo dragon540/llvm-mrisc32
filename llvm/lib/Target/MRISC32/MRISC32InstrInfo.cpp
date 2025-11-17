@@ -17,7 +17,7 @@
 using namespace llvm;
 
 MRISC32InstrInfo::MRISC32InstrInfo()
-    : MRISC32GenInstrInfo() {}
+    : MRISC32GenInstrInfo(/*MRISC32::ADJCALLSTACKDOWN*/0, /*MRISC32::ADJCALLSTACKUP*/0) {}
 
 void MRISC32InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
                                    MachineBasicBlock::iterator I,
@@ -42,7 +42,7 @@ void MRISC32InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
                                            MachineInstr::MIFlag Flag) const {
   // We may have to define some kind of store instruction before building this
   // Something to replace STri                                          
-  BuildMI(MBB, I, DebugLoc(), get(MRISC32::STri))
+  BuildMI(MBB, I, DebugLoc(), get(MRISC32::ADD))
       .addReg(SrcReg, getKillRegState(isKill))
       .addFrameIndex(FrameIndex)
       .addImm(0); // offset
@@ -57,7 +57,7 @@ void MRISC32InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB,
                                             MachineInstr::MIFlag Flag) const {
   // We may have to define some kind of load instruction before building this
   // Something to replace LDri          
-  BuildMI(MBB, I, DebugLoc(), get(MRISC32::LDri), DestReg)
+  BuildMI(MBB, I, DebugLoc(), get(MRISC32::ADD), DestReg)
       .addFrameIndex(FrameIndex)
       .addImm(0); // offset
 }

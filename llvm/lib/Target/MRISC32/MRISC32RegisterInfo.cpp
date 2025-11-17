@@ -4,6 +4,7 @@
 
 #include "MRISC32RegisterInfo.h"
 #include "MRISC32Subtarget.h"
+#include "MCTargetDesc/MRISC32MCTargetDesc.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineFunction.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
@@ -16,6 +17,9 @@
 
 #define GET_REGINFO_TARGET_DESC
 #include "MRISC32GenRegisterInfo.inc"
+
+#define DEBUG_TYPE "mrisc32-reg-info"
+
 using namespace llvm;
 
 MRISC32RegisterInfo::MRISC32RegisterInfo()
