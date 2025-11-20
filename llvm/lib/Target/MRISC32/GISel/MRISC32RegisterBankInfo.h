@@ -12,7 +12,7 @@ namespace llvm {
 
 class TargetRegisterInfo;
 
-class MRISC32kGenRegisterBankInfo : public RegisterBankInfo {
+class MRISC32GenRegisterBankInfo : public RegisterBankInfo {
 protected:
 #define GET_TARGET_REGBANK_CLASS
 #include "MRISC32GenRegisterBank.inc"
@@ -20,8 +20,6 @@ protected:
 
 /// This class provides the information for the target register banks.
 class MRISC32RegisterBankInfo final : public MRISC32GenRegisterBankInfo {
-  const PartialMapping PartMappings[];
-  const ValueMapping ValMappings[];
 public:
   MRISC32RegisterBankInfo(const TargetRegisterInfo &TRI);
 
@@ -29,8 +27,8 @@ public:
   getInstrMapping(const MachineInstr &MI) const override;
 
   const RegisterBank &
-        MRISC32RegisterBankInfo::getRegBankFromRegClass(const TargetRegisterClass &RC,
-                                                    LLT Ty) const override;
+  getRegBankFromRegClass(const TargetRegisterClass &RC,
+                         LLT Ty) const override;
 };
 } // end namespace llvm
 #endif

@@ -6,7 +6,7 @@
 
 #include "MCTargetDesc/MRISC32MCTargetDesc.h"
 #include "MCTargetDesc/MRISC32InstPrinter.h"
-#include "MCTargetDesc/MRISC32MCAsmInfo.h"
+//#include "MCTargetDesc/MRISC32MCAsmInfo.h"
 #include "TargetInfo/MRISC32TargetInfo.h"
 #include "llvm/MC/MCInstrAnalysis.h"
 #include "llvm/MC/MCInstrInfo.h"
@@ -75,8 +75,10 @@ public:
                       uint64_t &Target) const override {
     // The target is the 3rd operand of cond inst and the 1st of uncond inst.
     int32_t Imm;
-    if (isConditionalBranch(Inst)) {
-      if (Inst.getOpcode() == BPF::JCOND)
+
+    Imm = 0; // remove this line later
+    /***if (isConditionalBranch(Inst)) {
+      if (Inst.getOpcode() == ::JCOND)
         Imm = (short)Inst.getOperand(0).getImm();
       else
         Imm = (short)Inst.getOperand(2).getImm();
@@ -87,7 +89,7 @@ public:
         Imm = (int)Inst.getOperand(0).getImm();
     } else
       return false;
-
+    ***/
     Target = Addr + Size + Imm * Size;
     return true;
   }
@@ -99,37 +101,36 @@ static MCInstrAnalysis *createMRISC32InstrAnalysis(const MCInstrInfo *Info) {
   return new MRISC32MCInstrAnalysis(Info);
 }
 
-extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeBPFTargetMC() {
-  for (Target *T :
-       {&getTheMRISC32leTarget(), &getTheMRISC32beTarget(), &getTheMRISC32Target()}) {
-    // Register the MC asm info.
-    //RegisterMCAsmInfo<MRISC32MCAsmInfo> X(*T);
+extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32TargetMC() {
+  Target &TheTarget = getTheMRISC32Target();
+  
+  // Register the MC asm info.
+  //RegisterMCAsmInfo<> X(*T);
 
-    // Register the MC instruction info.
-    TargetRegistry::RegisterMCInstrInfo(*T, createMRISC32MCInstrInfo);
+  // Register the MC instruction info.
+  TargetRegistry::RegisterMCInstrInfo(TheTarget, createMRISC32MCInstrInfo);
 
-    // Register the MC register info.
-    TargetRegistry::RegisterMCRegInfo(*T, createMRISC32MCRegisterInfo);
+  // Register the MC register info.
+  TargetRegistry::RegisterMCRegInfo(TheTarget, createMRISC32MCRegisterInfo);
 
-    // Register the MC subtarget info.
-    TargetRegistry::RegisterMCSubtargetInfo(*T,
+  // Register the MC subtarget info.
+  TargetRegistry::RegisterMCSubtargetInfo(TheTarget,
                                             createMRISC32MCSubtargetInfo);
 
-    // Register the object streamer
-    //TargetRegistry::RegisterELFStreamer(*T, createMRISC32MCStreamer);
+  // Register the object streamer
+  //TargetRegistry::RegisterELFStreamer(*T, createMRISC32MCStreamer);
 
-    // Register the MCInstPrinter.
-    TargetRegistry::RegisterMCInstPrinter(*T, createMRISC32MCInstPrinter);
+  // Register the MCInstPrinter.
+  TargetRegistry::RegisterMCInstPrinter(TheTarget, createMRISC32MCInstPrinter);
 
-    // Register the MC instruction analyzer.
-    //TargetRegistry::RegisterMCInstrAnalysis(*T, createMRISC32InstrAnalysis);
-  }
+  // Register the MC instruction analyzer.
+  //TargetRegistry::RegisterMCInstrAnalysis(*T, createMRISC32InstrAnalysis);
 
   // Register the MC code emitter
   //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32leTarget(),
   //                                      createMRISC32MCCodeEmitter);
   //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32beTarget(),
-   //                                     createMRISC32beMCCodeEmitter);
+  //                                     createMRISC32beMCCodeEmitter);
 
   // Register the ASM Backend
   //TargetRegistry::RegisterMCAsmBackend(getTheMRISC32leTarget(),

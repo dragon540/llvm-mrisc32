@@ -9,7 +9,7 @@
 #include "MRISC32TargetMachine.h"
 #include "MCTargetDesc/MRISC32InstPrinter.h"
 #include "MCTargetDesc/MRISC32MCTargetDesc.h"
-//#include "TargetInfo/MRISC32TargetInfo.h"
+#include "TargetInfo/MRISC32TargetInfo.h"
 #include "llvm/CodeGen/AsmPrinter.h"
 #include "llvm/CodeGen/MachineConstantPool.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
@@ -104,8 +104,12 @@ void MRISC32AsmPrinter::emitInstruction(const MachineInstr *MI) {
   EmitToStreamer(*OutStreamer, TmpInst);
 }
 
+//INITIALIZE_PASS(MRISC32AsmPrinter, "mrisc32-asm-printer", "MRISC32 Assembly Printer",
+//                false, false)
+
 // Register the AsmPrinter in the MRISC32 target for other tools to find
 // it (like Clang.)
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32AsmPrinter() {
   RegisterAsmPrinter<MRISC32AsmPrinter> Tmp(getTheMRISC32Target());
 }
+

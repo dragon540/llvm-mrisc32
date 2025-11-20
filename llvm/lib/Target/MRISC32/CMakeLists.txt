@@ -22,6 +22,7 @@ add_llvm_target(MRISC32CodeGen
         MRISC32Subtarget.cpp
         MRISC32TargetMachine.cpp
         MRISC32MCInstLower.cpp
+        
         GISel/MRISC32CallLowering.cpp
         GISel/MRISC32LegalizerInfo.cpp
         GISel/MRISC32RegisterBankInfo.cpp
@@ -42,3 +43,6 @@ add_llvm_target(MRISC32CodeGen
         ADD_TO_COMPONENT
         MRISC32
 )
+
+add_subdirectory(MCTargetDesc)
+add_subdirectory(TargetInfo)

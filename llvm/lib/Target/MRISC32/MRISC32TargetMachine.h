@@ -2,12 +2,13 @@
 // Created by shobhit on 8/31/25.
 //
 
-#ifndef LLVM_MRISC32_MRISC32TARGETMACHINE_H
-#define LLVM_MRISC32_MRISC32TARGETMACHINE_H
+#ifndef LLVM_LIB_TARGET_MRISC32_MRISC32TARGETMACHINE_H
+#define LLVM_LIB_TARGET_MRISC32_MRISC32TARGETMACHINE_H
 
-#include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
+#include "MRISC32Subtarget.h"
 #include "llvm/Target/TargetLoweringObjectFile.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
+#include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
 #include <memory>
 #include <optional>
 
@@ -17,7 +18,8 @@ namespace llvm
 {
 class MRISC32TargetMachine : public CodeGenTargetMachineImpl {
   std::unique_ptr<TargetLoweringObjectFile> TLOF;
-  MRISC32Subtarget Subtarget;
+  //MRISC32Subtarget Subtarget;
+  std::unique_ptr<MRISC32Subtarget> Subtarget;
 
   public:
   MRISC32TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
@@ -26,10 +28,7 @@ class MRISC32TargetMachine : public CodeGenTargetMachineImpl {
                        std::optional<CodeModel::Model> CM, CodeGenOptLevel OL,
                        bool JIT);
 
-  const MRISC32Subtarget *getSubtargetImpl() const { return &Subtarget; }
-  const MRISC32Subtarget *getSubtargetImpl(const Function &) const override {
-    return &Subtarget;
-  }
+  //const MRISC32Subtarget *getSubtargetImpl(const Function &F) const override;
 
   TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
 
@@ -63,4 +62,4 @@ public:
 
 }
 
-#endif // LLVM_MRISC32_MRISC32TARGETMACHINE_H
+#endif // LLVM_LIB_TARGET_MRISC32_MRISC32TARGETMACHINE_H

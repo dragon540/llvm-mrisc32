@@ -4,12 +4,15 @@
 
 include "llvm/Target/Target.td"
 
+include "MRISC32ScheduleDefs.td"
 include "MRISC32RegisterInfo.td"
 include "MRISC32InstrInfo.td"
+include "MRISC32SchedModel.td"
 include "GISel/MRISC32RegisterBanks.td"
 //include "MRISC32Subtarget.td"
 //include "MRISC32Sched.td"
 
+def : ProcessorModel<"generic", MRISC32DefaultModel, /*Features=*/[]>;
 
 def MRISC32InstrInfo : InstrInfo;
 

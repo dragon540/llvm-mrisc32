@@ -11,6 +11,9 @@
 #include "llvm/MC/MCInst.h"
 #include "llvm/MC/MCSymbol.h"
 #include "llvm/Support/ErrorHandling.h"
+#include "llvm/MC/MCRegister.h"
+#include "llvm/Support/raw_ostream.h"
+
 using namespace llvm;
 
 #define DEBUG_TYPE "asm-printer"
@@ -34,7 +37,8 @@ void MRISC32InstPrinter::printOperand(const MCInst *MI, unsigned OpNo,
     O << formatImm((int32_t)Op.getImm());
   } else {
     assert(Op.isExpr() && "Expected an expression");
-    Op.getExpr()->print(O, &MAI);
+    //Op.getExpr()->print(O, &MAI);
+    MAI.printExpr(O, *Op.getExpr());
   }
 }
 

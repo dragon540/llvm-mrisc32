@@ -2,13 +2,17 @@
 // Created by shobhit on 8/31/25.
 //
 
-#ifndef LLVM_MRISC32_MRISC32SUBTARGET_H
-#define LLVM_MRISC32_MRISC32SUBTARGET_H
+#ifndef LLVM_LIB_TARGET_MRISC32_MRISC32SUBTARGET_H
+#define LLVM_LIB_TARGET_MRISC32_MRISC32SUBTARGET_H
 
 #include "MRISC32RegisterInfo.h"
 #include "MRISC32InstrInfo.h"
 #include "MRISC32FrameLowering.h"
-#include "MRISC32ISelLowering.h"
+//#include "MRISC32ISelLowering.h"
+#include "GISel/MRISC32CallLowering.h"
+#include "GISel/MRISC32LegalizerInfo.h"
+#include "GISel/MRISC32RegisterBankInfo.h"
+#include "MRISC32TargetMachine.h"
 #include "llvm/CodeGen/GlobalISel/CallLowering.h"
 #include "llvm/CodeGen/GlobalISel/InstructionSelector.h"
 #include "llvm/CodeGen/GlobalISel/LegalizerInfo.h"
@@ -19,18 +23,21 @@
 
 namespace llvm
 {
+class TargetMachine;
+class Triple;
+
 class MRISC32Subtarget : public MRISC32GenSubtargetInfo {
       MRISC32RegisterInfo   RegisterInfo;
       MRISC32InstrInfo      InstrInfo;
-      MRISC32FrameLowering  FL;
-      //MRISC32TargetLowering TL;
+      MRISC32FrameLowering  FrameLowering;
+      MRISC32TargetLowering TLInfo;
 
    public:
       MRISC32Subtarget(const Triple &TT, const std::string &CPU,
                        const std::string &FS, const TargetMachine &TM);
 
-      MRISC32Subtarget &initializeSubtargetDependencies(StringRef CPU,
-                                                        StringRef FS);
+      //MRISC32Subtarget &initializeSubtargetDependencies(StringRef CPU,
+      //                                                  StringRef FS);
 
       const MRISC32RegisterInfo *getRegisterInfo() const override;
 
@@ -55,4 +62,4 @@ class MRISC32Subtarget : public MRISC32GenSubtargetInfo {
       std::unique_ptr<RegisterBankInfo> RegBankInfo;
 };
 }
-#endif // LLVM_MRISC32_MRISC32SUBTARGET_H
+#endif // LLVM_LIB_TARGET_MRISC32_MRISC32SUBTARGET_H
