@@ -29,21 +29,27 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32Target() {
   RegisterTargetMachine<MRISC32TargetMachine> X(getTheMRISC32Target());
 
   PassRegistry &PR = *PassRegistry::getPassRegistry();
-  initializeMRISC32SimpleConstantPropagationPass(PR);
-  initializeMRISC32MandatoryPreLegalizerCombinerPass(PR);
-  initializeMRISC32MandatoryPostLegalizerCombinerPass(PR);
+  //initializeMRISC32SimpleConstantPropagationPass(PR);
+  //initializeMRISC32MandatoryPreLegalizerCombinerPass(PR);
+  //initializeMRISC32MandatoryPostLegalizerCombinerPass(PR);
   initializeGlobalISel(PR);
 }
+
+// TODO: Share this with Clang.
+static const char *MRISC32DataLayoutStr =
+    "e-p:16:16:16-n16:32-i32:32:32-i16:16:16-i1:8:8-f32:32:32-v32:32:32";
 
 MRISC32TargetMachine::MRISC32TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                        StringRef FS, const TargetOptions &Options,
                        std::optional<Reloc::Model> RM,
                        std::optional<CodeModel::Model> CM, CodeGenOptLevel OL,
                        bool JIT) 
-                       : CodeGenTargetMachineImpl(T, computeDataLayout(TT), TT, CPU, FS, Options,
-                         getEffectiveRelocModel(RM),
-                         getEffectiveCodeModel(CM, CodeModel::Small), OL),
-                         TLOF(createTLOF(getTargetTriple())),
+                       : CodeGenTargetMachineImpl(T, MRISC32DataLayoutStr, TT, CPU, FS, Options,
+                         // Use the simplest relocation by default.
+                         RM ? *RM : Reloc::Static,
+                         CM ? *CM : CodeModel::Small,
+                         OL)
+                         //TLOF(createTLOF(getTargetTriple()))
                         {}
 
   /***const MRISC32Subtarget *MRISC32TargetMachine::getSubtargetImpl(const Function &F) const {
@@ -67,11 +73,11 @@ TargetPassConfig* MRISC32TargetMachine::createPassConfig(PassManagerBase &PM) {
     return new MRISC32PassConfig(*this, PM);
 }
 
-TargetTransformInfo MRISC32TargetMachine::getTargetTransformInfo(const Function &F) const {
-    return TargetTransformInfo(std::make_unique<MRISC32TTIImpl>(this, F));
-}
+//TargetTransformInfo MRISC32TargetMachine::getTargetTransformInfo(const Function &F) const {
+//    return TargetTransformInfo(std::make_unique<MRISC32TTIImpl>(this, F));
+//}
 
-MRISC32PassConfig::MRISC32PassConfig(TargetMachine &TM, PassManagerBase &PM) :
+MRISC32PassConfig::MRISC32PassConfig(TargetMachine &TM, PassManagerBase &PM)
     : TargetPassConfig(TM, PM) {}
 
 bool MRISC32PassConfig::addIRTranslator() {

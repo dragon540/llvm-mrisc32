@@ -21,6 +21,6 @@ Target &llvm::getTheMRISC32Target() {
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32TargetInfo() {
   RegisterTarget<Triple::mrisc32, /*HasJIT=*/false> X(
       getTheMRISC32Target(), /*Name=*/"mrisc32",
-      /*Desc=*/"How to build an LLVM backend by example",
+      /*Desc=*/"32-bit MRISC",
       /*BackendName=*/"MRISC32");
 }

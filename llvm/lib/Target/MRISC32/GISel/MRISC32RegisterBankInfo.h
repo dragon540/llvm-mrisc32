@@ -3,7 +3,10 @@
 #ifndef LLVM_LIB_TARGET_MRISC32_GLSEL_MRISC32REGISTERBANKINFO_H
 #define LLVM_LIB_TARGET_MRISC32_GLSEL_MRISC32REGISTERBANKINFO_H
 
+#include "MCTargetDesc/MRISC32MCTargetDesc.h"
 #include "llvm/CodeGen/RegisterBankInfo.h"
+#include "llvm/CodeGen/TargetRegisterInfo.h"
+#include "llvm/CodeGenTypes/LowLevelType.h"
 
 #define GET_REGBANK_DECLARATIONS
 #include "MRISC32GenRegisterBank.inc"

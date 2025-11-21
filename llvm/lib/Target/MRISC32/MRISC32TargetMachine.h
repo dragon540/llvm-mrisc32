@@ -32,11 +32,11 @@ class MRISC32TargetMachine : public CodeGenTargetMachineImpl {
 
   TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
 
-  TargetTransformInfo getTargetTransformInfo(const Function &F) const override;
+  //TargetTransformInfo getTargetTransformInfo(const Function &F) const override;
 
-  TargetLoweringObjectFile *getObjFileLowering() const override {
-    return TLOF.get();
-  }
+  //TargetLoweringObjectFile *getObjFileLowering() const override {
+  //  return TLOF.get();
+  //}
 };
 
 class MRISC32PassConfig : public TargetPassConfig {

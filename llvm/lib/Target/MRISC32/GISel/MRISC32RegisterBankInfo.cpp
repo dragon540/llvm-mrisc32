@@ -3,10 +3,14 @@
 #include "MRISC32RegisterBankInfo.h"
 #include "MRISC32InstrInfo.h" // For the register classes
 #include "MRISC32Subtarget.h"
+#include "llvm/CodeGen/MachineFunction.h"
 #include "llvm/CodeGen/MachineRegisterInfo.h"
 #include "llvm/CodeGen/RegisterBank.h"
 #include "llvm/CodeGen/RegisterBankInfo.h"
 #include "llvm/CodeGen/TargetRegisterInfo.h"
+#include "llvm/Support/Debug.h"
+
+#define DEBUG_TYPE "mrisc32-reg-bank-info"
 
 #define GET_TARGET_REGBANK_IMPL
 #include "MRISC32GenRegisterBank.inc"
@@ -39,9 +43,9 @@ enum ValueMappingIdx {
 }
 
 MRISC32RegisterBankInfo::MRISC32RegisterBankInfo(const TargetRegisterInfo &TRI) 
-    : MRISC32RegisterBankInfo() {}
+    : MRISC32GenRegisterBankInfo() {}
 
-const InstructionMapping &MRISC32RegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
+const RegisterBankInfo::InstructionMapping &MRISC32RegisterBankInfo::getInstrMapping(const MachineInstr &MI) const {
     const unsigned Opc = MI.getOpcode();
     if(!isPreISelGenericOpcode(Opc) || Opc == TargetOpcode::G_PHI) {
         const InstructionMapping &Mapping = getInstrMappingImpl(MI);
@@ -56,7 +60,7 @@ const InstructionMapping &MRISC32RegisterBankInfo::getInstrMapping(const Machine
     unsigned NumOperands = MI.getNumOperands();
 
     const ValueMapping *GPR32ValueMapping =
-        &ValMappings[GPRB32Idx];
+        &MRISC32::ValMappings[MRISC32::GPRB32Idx];
 
     switch(Opc) {
         case TargetOpcode::G_ADD:
@@ -83,7 +87,8 @@ const InstructionMapping &MRISC32RegisterBankInfo::getInstrMapping(const Machine
                     continue;
 
                 OpdsMapping[Idx] =
-                    Ty.getSizeInBits() == 16 ? GPR16ValueMapping : GPR32ValueMapping;
+                    GPR32ValueMapping;
+                    //Ty.getSizeInBits() == 16 ? GPR16ValueMapping : GPR32ValueMapping;
             }
             return getInstructionMapping(DefaultMappingID, /*Cost=*/1,
                                         getOperandsMapping(OpdsMapping), NumOperands);
@@ -102,7 +107,7 @@ const RegisterBank &
         case MRISC32::GPRRegClassID:
         //case MRISC32::GPR16spRegClassID:
         //case MRISC32::OnlySPRegClassID:
-            return getRegBank(MRISC32::GPRRegBankID);
+            return getRegBank(MRISC32::GPRBRegBankID);
         }
 };
 

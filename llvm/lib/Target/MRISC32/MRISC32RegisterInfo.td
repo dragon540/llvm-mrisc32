@@ -18,8 +18,9 @@ class MRISC32RegisterClass<list<ValueType> types, int size, int alignment,
 
         let Size = size;
         let CopyCost = copycost;
-        let Namespace = "MRISC32";
+        //let Namespace = "MRISC32";
 }
 
-def GPR : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "R%u", 0, 31))>;
-
+let Namespace = "MRISC32" in {
+    def GPR : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "R%u", 0, 31))>;
+}

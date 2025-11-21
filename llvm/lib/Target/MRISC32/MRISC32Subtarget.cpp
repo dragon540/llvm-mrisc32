@@ -3,11 +3,19 @@
 //
 
 #include "MRISC32Subtarget.h"
+#include "GISel/MRISC32CallLowering.h"
+#include "GISel/MRISC32LegalizerInfo.h"
+#include "GISel/MRISC32RegisterBankInfo.h"
 #include "MRISC32.h" // For MRISC32::createInstructionSelector.
 #include "MRISC32ISelLowering.h"
+#include "MRISC32RegisterInfo.h"
 #include "MRISC32TargetMachine.h"
-#include "llvm/CodeGen/MachineScheduler.h" // For MachineSchedPolicy.
-#include "llvm/Target/TargetMachine.h"
+#include "llvm/CodeGen/MachineJumpTableInfo.h"
+#include "llvm/IR/Attributes.h"
+#include "llvm/IR/Function.h"
+#include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/CommandLine.h"
+#include "llvm/Support/ErrorHandling.h"
 
 using namespace llvm;
 
@@ -19,9 +27,7 @@ using namespace llvm;
 
 MRISC32Subtarget::MRISC32Subtarget(const Triple &TT, const std::string &CPU,
                        const std::string &FS, const TargetMachine &TM) :
-         MRISC32GenSubtargetInfo(TT, CPU, FS),
-         //RegisterInfo(*this),
-         //InstrInfo(*this),
+         MRISC32GenSubtargetInfo(TT, CPU, CPU, FS),
          FrameLowering(*this),
          TLInfo(TM, *this) {
 
@@ -51,7 +57,7 @@ const MRISC32FrameLowering *MRISC32Subtarget::getFrameLowering() const {
     return &FrameLowering;
 }
 
-const MRISC32Subtarget::MRISC32TargetLowering *getTargetLowering() {
+const MRISC32TargetLowering *MRISC32Subtarget::getTargetLowering() const {
     return &TLInfo;
 }
 

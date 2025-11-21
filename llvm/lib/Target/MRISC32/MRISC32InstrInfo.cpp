@@ -14,6 +14,9 @@
 #define GET_INSTRINFO_CTOR_DTOR
 #include "MRISC32GenInstrInfo.inc"
 
+#define GET_INSTRINFO_ENUM
+#include "MRISC32GenInstrInfo.inc"
+
 using namespace llvm;
 
 MRISC32InstrInfo::MRISC32InstrInfo()

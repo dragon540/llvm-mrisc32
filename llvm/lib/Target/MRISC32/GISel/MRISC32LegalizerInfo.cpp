@@ -1,5 +1,7 @@
 #include "MRISC32LegalizerInfo.h"
+#include "MRISC32Subtarget.h"
 
-MRISC32LegalizerInfo::MRISC32LegalizerInfo(const MRISC32Subtarget &ST) {
-    
-}
+using namespace llvm;
+
+MRISC32LegalizerInfo::MRISC32LegalizerInfo(const MRISC32Subtarget &ST) :
+    LegalizerInfo() {}

@@ -21,12 +21,12 @@ bool MRISC32CallLowering::lowerReturn(MachineIRBuilder &MIRBuilder, const Value 
                    Register SwiftErrorVReg) const {
         
         // generate instructions to pack result into appropriate registers
-        if (!RetVal)
-        return true; // void return
+        //if (!RetVal)
+        //return true; // void return
 
         // Return value in R0
-        MIRBuilder.buildCopy(XYZ::R0, VRegs[0]);
-        MIRBuilder.buildInstr(MRISC32::RET);
+        //MIRBuilder.buildCopy(MRISC32::R0, VRegs[0]);
+        //MIRBuilder.buildInstr(MRISC32::RET);
         return true;
 }
 
@@ -44,7 +44,9 @@ bool MRISC32CallLowering::lowerFormalArguments(MachineIRBuilder &MIRBuilder, con
         MachineFunction &MF = MIRBuilder.getMF();
         MachineRegisterInfo &MRI = MF.getRegInfo();
         const auto &DL = F.getDataLayout();
-        auto &TLI = *getTLI<M68kTargetLowering>();
+        auto &TLI = *getTLI<MRISC32TargetLowering>();
+
+        SmallVector<ArgInfo, 8> SplitArgs;
 
         unsigned int i=0;
         for(auto &Arg : F.args()) {
@@ -54,6 +56,7 @@ bool MRISC32CallLowering::lowerFormalArguments(MachineIRBuilder &MIRBuilder, con
                 ++i;
         }
 
+        SmallVector<CCValAssign, 16> ArgLocs;
         // Copy from physical registers to virtual ones (the function’s args)
         for (unsigned i = 0; i < ArgLocs.size(); ++i) {
                 CCValAssign &VA = ArgLocs[i];
