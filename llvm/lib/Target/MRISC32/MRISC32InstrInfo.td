@@ -45,3 +45,6 @@ def LDri : MRISC32Inst<(outs GPR:$dst),
 def STri : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
                       "STri $dst, $src1, $src2">;
+
+def ADJCALLSTACKUP   : MRISC32Inst<(outs), (ins), "adjstackup">;
+def ADJCALLSTACKDOWN : MRISC32Inst<(outs), (ins), "adjstackdown">;

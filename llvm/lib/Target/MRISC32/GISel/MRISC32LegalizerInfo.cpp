@@ -4,4 +4,6 @@
 using namespace llvm;
 
 MRISC32LegalizerInfo::MRISC32LegalizerInfo(const MRISC32Subtarget &ST) :
-    LegalizerInfo() {}
+    LegalizerInfo() {
+        getLegacyLegalizerInfo().computeTables(); 
+    }

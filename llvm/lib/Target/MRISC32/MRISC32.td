@@ -18,5 +18,4 @@ def MRISC32InstrInfo : InstrInfo;
 
 def MRISC32 : Target {
     let InstructionSet = MRISC32InstrInfo;
-    //let GlobalISel = 1;
 }

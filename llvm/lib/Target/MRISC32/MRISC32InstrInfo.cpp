@@ -20,7 +20,7 @@
 using namespace llvm;
 
 MRISC32InstrInfo::MRISC32InstrInfo()
-    : MRISC32GenInstrInfo(/*MRISC32::ADJCALLSTACKDOWN*/0, /*MRISC32::ADJCALLSTACKUP*/0) {}
+    : MRISC32GenInstrInfo(MRISC32::ADJCALLSTACKDOWN, MRISC32::ADJCALLSTACKUP) {}
 
 void MRISC32InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
                                    MachineBasicBlock::iterator I,
