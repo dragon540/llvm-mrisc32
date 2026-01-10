@@ -18,8 +18,7 @@ namespace llvm
 {
 class MRISC32TargetMachine : public CodeGenTargetMachineImpl {
   std::unique_ptr<TargetLoweringObjectFile> TLOF;
-  //MRISC32Subtarget Subtarget;
-  std::unique_ptr<MRISC32Subtarget> Subtarget;
+  mutable std::unique_ptr<MRISC32Subtarget> Subtarget;
 
   public:
   MRISC32TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
@@ -28,15 +27,15 @@ class MRISC32TargetMachine : public CodeGenTargetMachineImpl {
                        std::optional<CodeModel::Model> CM, CodeGenOptLevel OL,
                        bool JIT);
 
-  //const MRISC32Subtarget *getSubtargetImpl(const Function &F) const override;
+  const MRISC32Subtarget *getSubtargetImpl(const Function &F) const override;
 
   TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
 
-  //TargetTransformInfo getTargetTransformInfo(const Function &F) const override;
+  TargetTransformInfo getTargetTransformInfo(const Function &F) const override;
 
-  //TargetLoweringObjectFile *getObjFileLowering() const override {
-  //  return TLOF.get();
-  //}
+  TargetLoweringObjectFile *getObjFileLowering() const override {
+    return TLOF.get();
+  }
 };
 
 class MRISC32PassConfig : public TargetPassConfig {
@@ -49,7 +48,7 @@ public:
   
   //bool addInstSelector() override;
 
-  //void addIRPasses() override;
+  void addIRPasses() override;
   
   bool addIRTranslator() override;
   

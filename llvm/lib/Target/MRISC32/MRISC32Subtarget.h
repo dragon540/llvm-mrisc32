@@ -15,6 +15,7 @@
 #include "llvm/CodeGen/RegisterBankInfo.h"
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 #include "llvm/IR/DataLayout.h"
+#include "llvm/ADT/StringRef.h"
 #include "llvm/MC/MCInstrItineraries.h"
 #include "llvm/Support/Alignment.h"
 
@@ -28,14 +29,15 @@ class Triple;
 class MRISC32TargetLowering;
 
 class MRISC32Subtarget : public MRISC32GenSubtargetInfo {
+      virtual void anchor();
       MRISC32RegisterInfo   RegisterInfo;
       MRISC32InstrInfo      InstrInfo;
       MRISC32FrameLowering  FrameLowering;
       MRISC32TargetLowering TLInfo;
 
    public:
-      MRISC32Subtarget(const Triple &TT, const std::string &CPU,
-                       const std::string &FS, const TargetMachine &TM);
+      MRISC32Subtarget(const Triple &TT, StringRef CPU,
+                        StringRef FS, const TargetMachine &TM);
 
       //MRISC32Subtarget &initializeSubtargetDependencies(StringRef CPU,
       //                                                  StringRef FS);

@@ -25,8 +25,11 @@ using namespace llvm;
 #define GET_SUBTARGETINFO_CTOR
 #include "MRISC32GenSubtargetInfo.inc"
 
-MRISC32Subtarget::MRISC32Subtarget(const Triple &TT, const std::string &CPU,
-                       const std::string &FS, const TargetMachine &TM) :
+// Pin the vtable to this file.
+void MRISC32Subtarget::anchor() {}
+
+MRISC32Subtarget::MRISC32Subtarget(const Triple &TT, StringRef CPU,
+                       StringRef FS, const TargetMachine &TM) :
          MRISC32GenSubtargetInfo(TT, CPU, CPU, FS),
          FrameLowering(*this),
          TLInfo(TM, *this) {

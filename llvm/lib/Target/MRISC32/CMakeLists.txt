@@ -21,6 +21,8 @@ add_llvm_target(MRISC32CodeGen
         MRISC32ISelLowering.cpp
         MRISC32Subtarget.cpp
         MRISC32TargetMachine.cpp
+        MRISC32TargetObjectFile.cpp
+        MRISC32TargetTransformInfo.cpp
         MRISC32MCInstLower.cpp
         
         GISel/MRISC32CallLowering.cpp
@@ -29,6 +31,7 @@ add_llvm_target(MRISC32CodeGen
         GISel/MRISC32InstructionSelector.cpp
         MCTargetDesc/MRISC32InstPrinter.cpp
         MCTargetDesc/MRISC32MCTargetDesc.cpp
+        MCTargetDesc/MRISC32MCAsmInfo.cpp
 
         LINK_COMPONENTS
         AsmPrinter

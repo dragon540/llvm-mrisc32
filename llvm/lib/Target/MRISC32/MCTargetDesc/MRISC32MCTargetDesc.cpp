@@ -6,7 +6,7 @@
 
 #include "MCTargetDesc/MRISC32MCTargetDesc.h"
 #include "MCTargetDesc/MRISC32InstPrinter.h"
-//#include "MCTargetDesc/MRISC32MCAsmInfo.h"
+#include "MCTargetDesc/MRISC32MCAsmInfo.h"
 #include "TargetInfo/MRISC32TargetInfo.h"
 #include "llvm/MC/MCInstrAnalysis.h"
 #include "llvm/MC/MCInstrInfo.h"
@@ -43,6 +43,20 @@ static MCRegisterInfo *createMRISC32MCRegisterInfo(const Triple &TT) {
 static MCSubtargetInfo *createMRISC32MCSubtargetInfo(const Triple &TT,
                                                  StringRef CPU, StringRef FS) {
   return createMRISC32MCSubtargetInfoImpl(TT, CPU, /*TuneCPU*/ CPU, FS);
+}
+
+static MCAsmInfo *createMRISC32MCAsmInfo(const MCRegisterInfo &MRI,
+                                       const Triple &TheTriple,
+                                       const MCTargetOptions &Options) {
+  MCAsmInfo *MAI;
+  //if (TheTriple.isOSBinFormatMachO())
+  //  MAI = new H2BLBMCAsmInfoDarwin(TheTriple, Options);
+  if (TheTriple.isOSBinFormatELF())
+    MAI = new MRISC32MCAsmInfoELF(TheTriple, Options);
+  else
+    report_fatal_error("Binary format not supported");
+
+  return MAI;
 }
 
 static MCStreamer *
@@ -116,6 +130,8 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32TargetMC(
   // Register the MC subtarget info.
   TargetRegistry::RegisterMCSubtargetInfo(TheTarget,
                                             createMRISC32MCSubtargetInfo);
+  // Register the MCAsmInfo
+  TargetRegistry::RegisterMCAsmInfo(TheTarget, createMRISC32MCAsmInfo);
 
   // Register the object streamer
   //TargetRegistry::RegisterELFStreamer(*T, createMRISC32MCStreamer);
