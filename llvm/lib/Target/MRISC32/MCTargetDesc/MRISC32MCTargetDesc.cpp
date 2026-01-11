@@ -7,14 +7,18 @@
 #include "MCTargetDesc/MRISC32MCTargetDesc.h"
 #include "MCTargetDesc/MRISC32InstPrinter.h"
 #include "MCTargetDesc/MRISC32MCAsmInfo.h"
+#include "MCTargetDesc/MRISC32TargetStreamer.h"
 #include "TargetInfo/MRISC32TargetInfo.h"
 #include "llvm/MC/MCInstrAnalysis.h"
 #include "llvm/MC/MCInstrInfo.h"
 #include "llvm/MC/MCRegisterInfo.h"
 #include "llvm/MC/MCSubtargetInfo.h"
 #include "llvm/MC/TargetRegistry.h"
+#include "llvm/MC/MCCodeEmitter.h"
+#include "llvm/MC/MCAsmBackend.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/TargetParser/Host.h"
+#include "llvm/Support/FormattedStream.h"
 
 #define GET_INSTRINFO_MC_DESC
 #define ENABLE_INSTR_PREDICATE_VERIFIER
@@ -68,6 +72,20 @@ createMRISC32MCStreamer(const Triple &T, MCContext &Ctx,
                            std::move(Emitter));
 }
 
+static MCStreamer *createMRISC32AsmStreamer(
+    MCContext &Ctx,
+    std::unique_ptr<formatted_raw_ostream> OS,
+    std::unique_ptr<MCInstPrinter> InstPrint,
+    std::unique_ptr<MCCodeEmitter> MCE,
+    std::unique_ptr<MCAsmBackend> MAB) {
+
+  // Notice we pass the 'OS' and 'InstPrint' here now
+  auto *S = createAsmStreamer(Ctx, std::move(OS), std::move(InstPrint),
+                          std::move(MCE), std::move(MAB));
+  if (!S) llvm::errs() << "ERROR: createAsmStreamer returned NULL!\n";
+  return S;
+}
+
 static MCInstPrinter *createMRISC32MCInstPrinter(const Triple &T,
                                              unsigned SyntaxVariant,
                                              const MCAsmInfo &MAI,
@@ -76,6 +94,11 @@ static MCInstPrinter *createMRISC32MCInstPrinter(const Triple &T,
   if (SyntaxVariant == 0)
     return new MRISC32InstPrinter(MAI, MII, MRI);
   return nullptr;
+}
+
+static MCTargetStreamer *createMRISC32AsmTargetStreamer(
+    MCStreamer &S, formatted_raw_ostream &OS, MCInstPrinter *InstPrint) {
+  return new MRISC32TargetStreamer(S);
 }
 
 namespace {
@@ -134,13 +157,20 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32TargetMC(
   TargetRegistry::RegisterMCAsmInfo(TheTarget, createMRISC32MCAsmInfo);
 
   // Register the object streamer
-  //TargetRegistry::RegisterELFStreamer(*T, createMRISC32MCStreamer);
+  //TargetRegistry::RegisterELFStreamer(*TheTarget, createMRISC32MCStreamer);
+
+  // LOGGING TO CONSOLE
+  llvm::errs() << "MRISC32: Registering Streamers for target: " << TheTarget.getName() << "\n";
+
+  TargetRegistry::RegisterAsmStreamer(TheTarget, createMRISC32AsmStreamer);
 
   // Register the MCInstPrinter.
   TargetRegistry::RegisterMCInstPrinter(TheTarget, createMRISC32MCInstPrinter);
 
+  TargetRegistry::RegisterAsmTargetStreamer(TheTarget, createMRISC32AsmTargetStreamer);
+
   // Register the MC instruction analyzer.
-  //TargetRegistry::RegisterMCInstrAnalysis(*T, createMRISC32InstrAnalysis);
+  //TargetRegistry::RegisterMCInstrAnalysis(*TheTarget, createMRISC32InstrAnalysis);
 
   // Register the MC code emitter
   //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32leTarget(),
@@ -149,8 +179,7 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32TargetMC(
   //                                     createMRISC32beMCCodeEmitter);
 
   // Register the ASM Backend
-  //TargetRegistry::RegisterMCAsmBackend(getTheMRISC32leTarget(),
-  //                                     createMRISC32AsmBackend);
+  TargetRegistry::RegisterMCAsmBackend(TheTarget, createMRISC32AsmBackend);
   //TargetRegistry::RegisterMCAsmBackend(getTheMRISC32beTarget(),
   //                                     createMRISC32beAsmBackend);
 

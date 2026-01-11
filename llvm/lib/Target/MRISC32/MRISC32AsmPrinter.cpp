@@ -1,7 +1,7 @@
 //===----------------------------------------------------------------------===//
 //
 // This file contains a printer that converts from our internal representation
-// of machine-dependent LLVM code to the H2BLB assembly language.
+// of machine-dependent LLVM code to the MRISC32 assembly language.
 //
 //===----------------------------------------------------------------------===//
 

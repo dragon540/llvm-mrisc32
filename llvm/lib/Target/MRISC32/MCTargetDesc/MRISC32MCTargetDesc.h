@@ -35,7 +35,7 @@ MCAsmBackend *createMRISC32beAsmBackend(const Target &T, const MCSubtargetInfo &
                                     const MCRegisterInfo &MRI,
                                     const MCTargetOptions &Options);
 
-std::unique_ptr<MCObjectTargetWriter> createBPFELFObjectWriter(uint8_t OSABI);
+std::unique_ptr<MCObjectTargetWriter> createMRISC32ELFObjectWriter(uint8_t OSABI);
 } // namespace llvm
 
 // Defines symbolic names for MRISC32 registers.  This defines a mapping from

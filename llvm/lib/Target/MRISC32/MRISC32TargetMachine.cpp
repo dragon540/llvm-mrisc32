@@ -44,8 +44,10 @@ static std::unique_ptr<TargetLoweringObjectFile> createTLOF(const Triple &TT) {
 }
 
 // TODO: Share this with Clang.
-static const char *MRISC32DataLayoutStr =
-    "e-p:16:16:16-n16:32-i32:32:32-i16:16:16-i1:8:8-f32:32:32-v32:32:32";
+//static const char *MRISC32DataLayoutStr =
+//    "e-p:16:16:16-n16:32-i32:32:32-i16:16:16-i1:8:8-f32:32:32-v32:32:32";
+
+static const char *MRISC32DataLayoutStr = "e-m:e-p:32:32-i64:64-n32-S128";
 
 MRISC32TargetMachine::MRISC32TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                        StringRef FS, const TargetOptions &Options,
