@@ -35,6 +35,7 @@ add_llvm_target(MRISC32CodeGen
         MCTargetDesc/MRISC32MCAsmInfo.cpp
         MCTargetDesc/MRISC32TargetStreamer.cpp
         MCTargetDesc/MRISC32AsmBackend.cpp
+        MCTargetDesc/MRISC32ELFObjectWriter.cpp
 
         LINK_COMPONENTS
         AsmPrinter
