@@ -61,6 +61,7 @@ MRISC32TargetMachine::MRISC32TargetMachine(const Target &T, const Triple &TT, St
                          OL),
                          TLOF(createTLOF(getTargetTriple())) {
   initAsmInfo();
+  setGlobalISel(true);
   this->Options.ExceptionModel = ExceptionHandling::None;
 }
 
