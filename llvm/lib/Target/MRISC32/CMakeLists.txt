@@ -10,7 +10,7 @@ tablegen(LLVM MRISC32GenGlobalISel.inc         -gen-global-isel)
 tablegen(LLVM MRISC32GenRegisterBank.inc       -gen-register-bank)
 tablegen(LLVM MRISC32GenSubtargetInfo.inc      -gen-subtarget)
 tablegen(LLVM MRISC32GenAsmWriter.inc          -gen-asm-writer)
-#tablegen(LLVM MRISC32GenMCCodeEmitter.inc     -gen-emitter)
+tablegen(LLVM MRISC32GenMCCodeEmitter.inc      -gen-emitter)
 
 add_public_tablegen_target(MRISC32CommonTableGen)
 
@@ -36,6 +36,7 @@ add_llvm_target(MRISC32CodeGen
         MCTargetDesc/MRISC32TargetStreamer.cpp
         MCTargetDesc/MRISC32AsmBackend.cpp
         MCTargetDesc/MRISC32ELFObjectWriter.cpp
+        MCTargetDesc/MRISC32MCCodeEmitter.cpp
 
         LINK_COMPONENTS
         AsmPrinter

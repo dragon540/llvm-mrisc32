@@ -4,7 +4,7 @@ add_llvm_component_library(LLVMMRISC32Desc
   MRISC32TargetStreamer.cpp
   MRISC32AsmBackend.cpp
   MRISC32InstPrinter.cpp
-  #MRISC32MCCodeEmitter.cpp
+  MRISC32MCCodeEmitter.cpp
   MRISC32ELFObjectWriter.cpp
 
   LINK_COMPONENTS

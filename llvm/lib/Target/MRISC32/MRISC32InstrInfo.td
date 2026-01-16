@@ -6,6 +6,7 @@ class MRISC32Inst<dag outs, dag ins, string asmString> : Instruction {
     dag OutOperandList = outs;
     dag InOperandList = ins;
     //let Inst{31-0} = (outs GPR:$dst), (ins GPR:$src1, GPR:$src2);
+    let Inst{31-0} = 0b00000000000000000000000000000000;
     let Namespace = "MRISC32";
     let AsmString = asmString;
 }
