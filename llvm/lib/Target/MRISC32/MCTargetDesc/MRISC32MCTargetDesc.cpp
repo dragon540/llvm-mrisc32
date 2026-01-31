@@ -173,8 +173,7 @@ extern "C" LLVM_ABI LLVM_EXTERNAL_VISIBILITY void LLVMInitializeMRISC32TargetMC(
   //TargetRegistry::RegisterMCInstrAnalysis(*TheTarget, createMRISC32InstrAnalysis);
 
   // Register the MC code emitter
-  //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32leTarget(),
-  //                                      createMRISC32MCCodeEmitter);
+  TargetRegistry::RegisterMCCodeEmitter(TheTarget, createMRISC32MCCodeEmitter);
   //TargetRegistry::RegisterMCCodeEmitter(getTheMRISC32beTarget(),
   //                                     createMRISC32beMCCodeEmitter);
 

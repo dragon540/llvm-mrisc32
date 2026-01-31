@@ -17,6 +17,8 @@
 #include <cassert>
 #include <cstdint>
 
+static const unsigned FK_MRISC32_PCRel_11 = llvm::FirstTargetFixupKind + 1;
+
 using namespace llvm;
 
 #define DEBUG_TYPE "mccodeemitter"
@@ -68,10 +70,10 @@ MRISC32MCCodeEmitter::getMachineOpValue(const MCInst &MI, const MCOperand &MO,
   assert(MO.isExpr());
   const MCExpr *Expr = MO.getExpr();
   assert(Expr->getKind() == MCExpr::SymbolRef);
-
-  if (MI.getOpcode() == H2BLB::CALL) {
+ 
+  if (MI.getOpcode() == MRISC32::CALL) {
     Fixups.push_back(
-        MCFixup::create(0, Expr, (MCFixupKind)MRISC32::FK_MRISC32_PCRel_11));
+        MCFixup::create(0, Expr, static_cast<MCFixupKind>(FK_MRISC32_PCRel_11)));
   } else
     llvm_unreachable("We don't have any operation with symbols");
 
