@@ -24,7 +24,7 @@ bool MRISC32CallLowering::lowerReturn(MachineIRBuilder &MIRBuilder, const Value 
     
     // If there is a return value (VRegs is not empty), move it to R0
     if (!VRegs.empty()) {
-        MIRBuilder.buildCopy(MRISC32::R0, VRegs[0]);
+        MIRBuilder.buildCopy(MRISC32::r0, VRegs[0]);
     }
 
     MIRBuilder.buildInstr(MRISC32::RET);
@@ -42,7 +42,7 @@ bool MRISC32CallLowering::lowerFormalArguments(
     ArrayRef<ArrayRef<Register>> VRegs, FunctionLoweringInfo &FLI) const {
 
   // Define calling convention (which physical registers hold args)
-  static const MCPhysReg ArgRegs[] = {MRISC32::R0, MRISC32::R1, MRISC32::R2, MRISC32::R3};
+  static const MCPhysReg ArgRegs[] = {MRISC32::r0, MRISC32::r1, MRISC32::r2, MRISC32::r3};
 
   // Map each incoming VReg to a physical register
   for (unsigned i = 0; i < VRegs.size(); ++i) {

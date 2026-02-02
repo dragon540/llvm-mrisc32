@@ -40,7 +40,7 @@ static MCInstrInfo *createMRISC32MCInstrInfo() {
 
 static MCRegisterInfo *createMRISC32MCRegisterInfo(const Triple &TT) {
   MCRegisterInfo *X = new MCRegisterInfo();
-  InitMRISC32MCRegisterInfo(X, MRISC32::R11 /* RAReg doesn't exist */);
+  InitMRISC32MCRegisterInfo(X, MRISC32::r11 /* RAReg doesn't exist */);
   return X;
 }
 

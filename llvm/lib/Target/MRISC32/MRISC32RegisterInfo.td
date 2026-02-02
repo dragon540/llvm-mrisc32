@@ -9,7 +9,7 @@ class MRISC32Reg<bits<5> Enc, string n> : Register<n> {
 
 foreach I = 0-31 in {
     let isConstant = !eq(0, I) in
-        def R#I : MRISC32Reg<I, "R"#I>;
+        def r#I : MRISC32Reg<I, "r"#I>;
 }
 
 class MRISC32RegisterClass<list<ValueType> types, int size, int alignment,
@@ -22,5 +22,5 @@ class MRISC32RegisterClass<list<ValueType> types, int size, int alignment,
 }
 
 let Namespace = "MRISC32" in {
-    def GPR : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "R%u", 0, 31))>;
+    def GPR : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "r%u", 0, 31))>;
 }

@@ -23,7 +23,7 @@
 using namespace llvm;
 
 MRISC32RegisterInfo::MRISC32RegisterInfo()
-    : MRISC32GenRegisterInfo(MRISC32::R0) {}
+    : MRISC32GenRegisterInfo(MRISC32::r0) {}
 
 const MCPhysReg *MRISC32RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
     static const MCPhysReg CalleeSavedRegs[] = { 0 }; // Terminator
@@ -33,12 +33,12 @@ const MCPhysReg *MRISC32RegisterInfo::getCalleeSavedRegs(const MachineFunction *
 BitVector MRISC32RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
     BitVector Reserved(getNumRegs());
     // Example: Reserve R0 if R0 is hardwired to zero
-    Reserved.set(MRISC32::R0); 
+    Reserved.set(MRISC32::r0); 
     return Reserved;
 }
 
 Register MRISC32RegisterInfo::getFrameRegister(const MachineFunction &MF) const {
-    return MRISC32::R28;
+    return MRISC32::r28;
 }
 
 bool MRISC32RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator MI, int SPAdj,
