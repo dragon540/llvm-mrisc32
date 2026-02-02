@@ -48,6 +48,10 @@ public:
   void encodeInstruction(const MCInst &MI, SmallVectorImpl<char> &CB,
                          SmallVectorImpl<MCFixup> &Fixups,
                          const MCSubtargetInfo &STI) const override;
+
+  uint64_t getImmOpValue(const MCInst &MI, unsigned OpNo,
+                       SmallVectorImpl<MCFixup> &Fixups,
+                       const MCSubtargetInfo &STI) const;
 };
 
 } // end anonymous namespace
@@ -76,6 +80,18 @@ MRISC32MCCodeEmitter::getMachineOpValue(const MCInst &MI, const MCOperand &MO,
         MCFixup::create(0, Expr, static_cast<MCFixupKind>(FK_MRISC32_PCRel_11)));
   } else
     llvm_unreachable("We don't have any operation with symbols");
+
+  return 0;
+}
+
+uint64_t MRISC32MCCodeEmitter::
+getImmOpValue(const MCInst &MI, unsigned OpNo,
+              SmallVectorImpl<MCFixup> &Fixups,
+              const MCSubtargetInfo &STI) const {
+  const MCOperand &MO = MI.getOperand(OpNo);
+  
+  if (MO.isImm())
+    return static_cast<uint64_t>(MO.getImm());
 
   return 0;
 }

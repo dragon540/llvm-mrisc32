@@ -2,24 +2,21 @@
 // This file describes the MRISC32 instructions
 //===---------------------------------------------===//
 
-class MRISC32Inst<dag outs, dag ins, string asmString> : Instruction {
-    dag OutOperandList = outs;
-    dag InOperandList = ins;
-    field bits<32> Inst;
-    //let Inst{31-0} = (outs GPR:$dst), (ins GPR:$src1, GPR:$src2);
-    let Inst{31-0} = 0b00000000000000000000000000000000;
-    let Namespace = "MRISC32";
-    let AsmString = asmString;
-}
+include "MRISC32InstrFormats.td"
 
-def ADD : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "ADD $dst, $src1, $src2">;
-def : Pat<(add GPR:$src1, GPR:$src2),
-          (ADD GPR:$src1, GPR:$src2)>;
+
+def ADD_B : FmtB<22, (outs GPR:$regA), (ins GPR:$regB, GPR:$regC), "add $regA, $regB, $regC">;
+
+def ADD_C : FmtC<22, (outs GPR:$regA), (ins GPR:$regB, imm15:$imm), "add $regA, $regB, $imm">;
+
+def : Pat<(add GPR:$regB, GPR:$regC),
+          (ADD_B GPR:$regB, GPR:$regC)>;
+def : Pat<(add GPR:$regB, imm15:$imm),
+          (ADD_C GPR:$regB, imm15:$imm)>;
+
 def : GINodeEquiv<G_ADD, add>;
 
-def SUB : MRISC32Inst<(outs GPR:$dst), 
+/***def SUB : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
                       "SUB $dst, $src1, $src2">;
 
@@ -47,6 +44,8 @@ def LDri : MRISC32Inst<(outs GPR:$dst),
 def STri : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
                       "STri $dst, $src1, $src2">;
+
+***/
 let isPseudo = 1, isCodeGenOnly = 1 in
 def ADJCALLSTACKUP   : MRISC32Inst<(outs), (ins), "adjstackup">;
 let isPseudo = 1, isCodeGenOnly = 1 in
@@ -58,12 +57,8 @@ let isReturn = 1, isTerminator = 1, isBarrier = 1 in
 def RET : MRISC32Inst<(outs), (ins), "ret">;
 
 
-// 1. Define the LI instruction using your base class
-def LI : MRISC32Inst<(outs GPR:$dst), (ins i32imm:$imm),
-                     "LI $dst, $imm"> {
-  // For now
-  let Inst{31-26} = 0b000001; 
-}
+def LI : FmtD<6, (outs GPR:$regA), (ins imm21:$imm),
+                     "li $regA, $imm">;
 
 // Define the SelectionDAG pattern (The "old" bridge)
 def : Pat<(imm:$imm), (LI (i32 imm:$imm))>;
