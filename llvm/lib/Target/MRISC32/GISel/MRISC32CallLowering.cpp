@@ -41,12 +41,13 @@ bool MRISC32CallLowering::lowerFormalArguments(
     MachineIRBuilder &MIRBuilder, const Function &F,
     ArrayRef<ArrayRef<Register>> VRegs, FunctionLoweringInfo &FLI) const {
 
-  // Define calling convention (which physical registers hold args)
-  static const MCPhysReg ArgRegs[] = {MRISC32::r0, MRISC32::r1, MRISC32::r2, MRISC32::r3};
+  // The first arguments to a function are passed in registers R1 to R8. 
+  static const MCPhysReg ArgRegs[] = {MRISC32::r1, MRISC32::r2, MRISC32::r3, MRISC32::r4,
+                                      MRISC32::r5, MRISC32::r6, MRISC32::r7, MRISC32::r8};
 
   // Map each incoming VReg to a physical register
   for (unsigned i = 0; i < VRegs.size(); ++i) {
-    if (i >= 4) return false; // Basic support for first 4 args only for now
+    if (i >= 8) return false;          // First 8 args are passed through registers
 
     Register VReg = VRegs[i][0];
     MCPhysReg PReg = ArgRegs[i];
