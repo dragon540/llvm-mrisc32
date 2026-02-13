@@ -5,13 +5,13 @@
 include "MRISC32InstrFormats.td"
 
 
-def ADD_B : FmtB<22, (outs GPR:$regA), (ins GPR:$regB, GPR:$regC), "add $regA, $regB, $regC">;
+def ADD_B : FmtB<22, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "add $regA, $regB, $regC">;
 
-def ADD_C : FmtC<22, (outs GPR:$regA), (ins GPR:$regB, imm15:$imm), "add $regA, $regB, $imm">;
+def ADD_C : FmtC<22, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "add $regA, $regB, $imm">;
 
 def : Pat<(add GPR:$regB, GPR:$regC),
           (ADD_B GPR:$regB, GPR:$regC)>;
-def : Pat<(add GPR:$regB, imm15:$imm),
+def : Pat<(add GPR:$regB, imm:$imm),
           (ADD_C GPR:$regB, imm15:$imm)>;
 
 def : GINodeEquiv<G_ADD, add>;
@@ -51,13 +51,12 @@ def ADJCALLSTACKUP   : MRISC32Inst<(outs), (ins), "adjstackup">;
 let isPseudo = 1, isCodeGenOnly = 1 in
 def ADJCALLSTACKDOWN : MRISC32Inst<(outs), (ins), "adjstackdown">;
 
-def CALL : MRISC32Inst<(outs GPR:$dst), (ins GPR:$src1, GPR:$src2), "call target">;
+def CALL : MRISC32Inst<(outs GPRDst:$dst), (ins GPR:$src1, GPR:$src2), "call target">;
 
 let isReturn = 1, isTerminator = 1, isBarrier = 1 in
 def RET : MRISC32Inst<(outs), (ins), "ret">;
 
-
-def LI : FmtD<6, (outs GPR:$regA), (ins imm21:$imm),
+def LI : FmtD<6, (outs GPRDst:$regA), (ins imm21:$imm),
                      "li $regA, $imm">;
 
 // Define the SelectionDAG pattern (The "old" bridge)

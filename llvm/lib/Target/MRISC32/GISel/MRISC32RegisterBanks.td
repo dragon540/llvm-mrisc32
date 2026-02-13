@@ -1,2 +1,2 @@
-/// General Purpose Registers. Here we define a register bank with name AnyGPR
+/// General Purpose Registers. Here we define a register bank with name GPR
 def GPRBRegBank : RegisterBank<"GPRB", [GPR]>;

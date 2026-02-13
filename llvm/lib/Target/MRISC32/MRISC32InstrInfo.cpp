@@ -2,6 +2,8 @@
 // Created by shobhit on 8/31/25.
 //
 
+#include "MRISC32RegisterInfo.h"
+#include "MRISC32Subtarget.h"
 #include "MRISC32InstrInfo.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/CodeGen/MachineBasicBlock.h"
@@ -17,6 +19,9 @@
 #define GET_INSTRINFO_ENUM
 #include "MRISC32GenInstrInfo.inc"
 
+#define GET_REGINFO_ENUM
+#include "MRISC32GenRegisterInfo.inc"
+
 using namespace llvm;
 
 MRISC32InstrInfo::MRISC32InstrInfo()
@@ -31,8 +36,12 @@ void MRISC32InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
   if (DestReg == SrcReg)
     return;
 
-  report_fatal_error("copyPhysReg not implemented yet");
-  // We may want to define some kind of mov instruction to use here 
+  assert(DestReg != MRISC32::r0 && "Trying copy to register R0");
+
+  // DestReg <-- SrcReg + 0
+  BuildMI(MBB, I, DL, get(MRISC32::ADD_B), DestReg)
+      .addReg(SrcReg, getKillRegState(KillSrc))
+      .addReg(MRISC32::r0);
 }
 
 void MRISC32InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,

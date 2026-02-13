@@ -22,12 +22,12 @@ bool MRISC32CallLowering::lowerReturn(MachineIRBuilder &MIRBuilder, const Value 
                    ArrayRef<Register> VRegs, FunctionLoweringInfo &FLI,
                    Register SwiftErrorVReg) const {
     
-    // If there is a return value (VRegs is not empty), move it to R0
+    // If there is a return value (VRegs is not empty), move it to R1
     if (!VRegs.empty()) {
-        MIRBuilder.buildCopy(MRISC32::r0, VRegs[0]);
+        MIRBuilder.buildCopy(MRISC32::r1, VRegs[0]);
     }
 
-    MIRBuilder.buildInstr(MRISC32::RET);
+    MIRBuilder.buildInstr(MRISC32::RET).addUse(MRISC32::r1);
     return true;
 }
 
@@ -57,6 +57,8 @@ bool MRISC32CallLowering::lowerFormalArguments(
 
     // Create the definition for the virtual register
     MIRBuilder.buildCopy(VReg, Register(PReg));
+
+    // TODO: Define logic to push greater than 8th argument to the stack 
   }
 
   return true;

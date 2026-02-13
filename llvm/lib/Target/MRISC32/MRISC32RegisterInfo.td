@@ -18,9 +18,8 @@ class MRISC32RegisterClass<list<ValueType> types, int size, int alignment,
 
         let Size = size;
         let CopyCost = copycost;
-        //let Namespace = "MRISC32";
 }
 
-let Namespace = "MRISC32" in {
-    def GPR : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "r%u", 0, 31))>;
-}
+def GPR       : MRISC32RegisterClass<[i32, f32], 32, 32, (add (sequence "r%u", 0, 31))>;
+// Only consists of registers which can be used as destination register to store some values.
+def GPRDst    : MRISC32RegisterClass<[i32, f32], 31, 31, (add (sequence "r%u", 1, 31))>;
