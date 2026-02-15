@@ -24,6 +24,18 @@ public:
 
   // Pure virtual: must be implemented
   bool writeNopData(raw_ostream &OS, uint64_t Count, const MCSubtargetInfo *STI) const override {
+    if(Count == 0) return true;
+    if (Count % 4 == 0) 
+    {
+      for(uint64_t i = 0; i < Count; i+=4)
+      {
+        // Writing add r0, r0, 0 as no-op
+        OS.write(static_cast<char>(0x00));
+        OS.write(static_cast<char>(0x00));
+        OS.write(static_cast<char>(0x00));
+        OS.write(static_cast<char>(0x16));
+      }
+    }
     return false;
   }
 
