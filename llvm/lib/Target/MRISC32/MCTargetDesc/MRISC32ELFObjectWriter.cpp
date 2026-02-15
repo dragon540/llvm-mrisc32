@@ -14,7 +14,7 @@ public:
   MRISC32ELFObjectWriter(uint8_t OSABI)
       : MCELFObjectTargetWriter(/*Is64Bit=*/false,
                                 OSABI,
-                                ELF::EM_NONE,
+                                ELF::EM_MRISC32,
                                 /*HasRelocationAddend=*/true) {}
 
   ~MRISC32ELFObjectWriter() override = default;
