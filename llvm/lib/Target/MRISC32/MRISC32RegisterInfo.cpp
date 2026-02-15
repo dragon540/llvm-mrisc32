@@ -26,8 +26,7 @@ MRISC32RegisterInfo::MRISC32RegisterInfo()
     : MRISC32GenRegisterInfo(MRISC32::r0) {}
 
 const MCPhysReg *MRISC32RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
-    static const MCPhysReg CalleeSavedRegs[] = { 0 }; // Terminator
-    return CalleeSavedRegs;
+    return CSR_SaveList; // CSR_SaveList is generated from CSR in MRISC32CallingConv.td
 }
 
 BitVector MRISC32RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
