@@ -6,8 +6,7 @@ include "MRISC32InstrFormats.td"
 
 
 def ADD_B : FmtB<22, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "add $regA, $regB, $regC">;
-
-def ADD_C : FmtC<22, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "add $regA, $regB, $imm">;
+def ADD_C : FmtC<22, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "add $regA, $regB, #$imm">;
 
 def : Pat<(add GPR:$regB, GPR:$regC),
           (ADD_B GPR:$regB, GPR:$regC)>;
@@ -57,11 +56,22 @@ let isReturn = 1, isTerminator = 1, isBarrier = 1 in
 def RET : MRISC32Inst<(outs), (ins), "ret">;
 
 def LI : FmtD<6, (outs GPRDst:$regA), (ins imm21:$imm),
-                     "li $regA, $imm">;
+                     "ldi $regA, #$imm">;
 
 // Define the SelectionDAG pattern (The "old" bridge)
 def : Pat<(imm:$imm), (LI (i32 imm:$imm))>;
 
+def STW_B : FmtB<6, (outs), (ins GPR:$regA, GPR:$regB, GPR:$regC), "stw $regA, [$regB, $regC]">;
+def STW_C : FmtC<6, (outs), (ins GPR:$regA, GPR:$regB, imm15:$imm), "stw $regA, [$regB, #$imm]">;
+
+def : Pat<(store i32:$regA, (add GPR:$regB, GPR:$regC)),
+          (STW_B GPR:$regA, GPR:$regB, GPR:$regC)>;
+def : Pat<(store i32:$regA, (add GPR:$regB, imm:$imm)),
+          (STW_C GPR:$regA, GPR:$regB, imm15:$imm)>;
+
+def : GINodeEquiv<G_STORE, st>;
+
 // Define the GlobalISel Equivalence (The "new" bridge)
 // This links the generic G_CONSTANT to the concept of 'imm'
 def : GINodeEquiv<G_CONSTANT, imm>;
+

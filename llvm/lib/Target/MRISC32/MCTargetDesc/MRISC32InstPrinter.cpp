@@ -5,7 +5,6 @@
 //===----------------------------------------------------------------------===//
 
 #include "MCTargetDesc/MRISC32InstPrinter.h"
-//#include "BPF.h"
 #include "llvm/MC/MCAsmInfo.h"
 #include "llvm/MC/MCExpr.h"
 #include "llvm/MC/MCInst.h"
@@ -18,6 +17,8 @@ using namespace llvm;
 
 #define DEBUG_TYPE "asm-printer"
 
+#define GET_REGINFO_ENUM
+#include "MRISC32GenRegisterInfo.inc"
 // Include the auto-generated portion of the assembly writer.
 #include "MRISC32GenAsmWriter.inc"
 
@@ -32,7 +33,7 @@ void MRISC32InstPrinter::printOperand(const MCInst *MI, unsigned OpNo,
                                   raw_ostream &O) {
   const MCOperand &Op = MI->getOperand(OpNo);
   if (Op.isReg()) {
-    O << getRegisterName(Op.getReg());
+    O << getRegisterName(Op.getReg(), MRISC32::ABINames);
   } else if (Op.isImm()) {
     O << formatImm((int32_t)Op.getImm());
   } else {

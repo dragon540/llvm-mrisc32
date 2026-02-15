@@ -7,9 +7,19 @@ class MRISC32Reg<bits<5> Enc, string n> : Register<n> {
     let Namespace  = "MRISC32";
 }
 
+def ABINames : RegAltNameIndex;
+
 foreach I = 0-31 in {
     let isConstant = !eq(0, I) in
-        def r#I : MRISC32Reg<I, "r"#I>;
+        def r#I : MRISC32Reg<I, "r"#I> {
+            let AltNames = !cond(
+            !eq(I, 28) : ["fp"], // r28 is frame pointer
+            !eq(I, 29) : ["sp"], // r29 is stack pointer
+            true       : ["r"#I]
+            );
+
+            let RegAltNameIndices = !if(!empty(AltNames), [], [ABINames]);
+        }
 }
 
 class MRISC32RegisterClass<list<ValueType> types, int size, int alignment,
