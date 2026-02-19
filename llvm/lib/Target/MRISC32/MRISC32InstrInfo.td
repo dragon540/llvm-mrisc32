@@ -11,7 +11,7 @@ def ADD_C : FmtC<22, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "add $reg
 def : Pat<(add GPR:$regB, GPR:$regC),
           (ADD_B GPR:$regB, GPR:$regC)>;
 def : Pat<(add GPR:$regB, imm:$imm),
-          (ADD_C GPR:$regB, imm15:$imm)>;
+          (ADD_C GPR:$regB, imm:$imm)>;
 
 def : GINodeEquiv<G_ADD, add>;
 

@@ -17,8 +17,8 @@ class FmtA<bits<10> opcode, dag outs, dag ins, string asmString>
 {
     bits<5> regA;
     bits<5> regB;
-    bits<1> V;
-    bits<2> T;
+    bits<1> V = {0b0};
+    bits<2> T = {0b00};
 
     let Inst{31-28} = 0b0000;
     let Inst{27-26} = opcode{9-8};
