@@ -66,26 +66,21 @@ def : Pat<(sdiv GPR:$regB, imm:$imm),
 
 def : GINodeEquiv<G_SDIV, sdiv>;
 
-
-/**
-// Return the minimum value of two signed integer operands.
-def MIN : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "MIN $dst, $src1, $src2">;
-
-// Return the maximum value of two signed integer operands.
-def MAX : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "MAX $dst, $src1, $src2">;
-
-def LDri : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "LDri $dst, $src1, $src2">;
-def STri : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "STri $dst, $src1, $src2">;
-
+/***
+* REM instruction
+* Opcode: 42
+* Format B and C
 ***/
+def REM_B : FmtB<42, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "rem $regA, $regB, $regC">;
+def REM_C : FmtC<42, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "rem $regA, $regB, #$imm">;
+
+def : Pat<(srem GPR:$regB, GPR:$regC),
+          (REM_B GPR:$regB, GPR:$regC)>;
+def : Pat<(srem GPR:$regB, imm:$imm),
+          (REM_C GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_SREM, srem>;
+
 let isPseudo = 1, isCodeGenOnly = 1 in
 def ADJCALLSTACKUP   : MRISC32Inst<(outs), (ins), "adjstackup">;
 let isPseudo = 1, isCodeGenOnly = 1 in
