@@ -5,6 +5,11 @@
 include "MRISC32InstrFormats.td"
 
 
+/***
+* ADD instruction
+* Opcode: 22
+* Format B and C
+***/
 def ADD_B : FmtB<22, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "add $regA, $regB, $regC">;
 def ADD_C : FmtC<22, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "add $regA, $regB, #$imm">;
 
@@ -15,18 +20,54 @@ def : Pat<(add GPR:$regB, imm:$imm),
 
 def : GINodeEquiv<G_ADD, add>;
 
-/***def SUB : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "SUB $dst, $src1, $src2">;
+/***
+* SUB instruction
+* Opcode: 23
+* Format B and C
+***/
+def SUB_B : FmtB<23, (outs GPRDst:$regA), (ins GPR:$regC, GPR:$regB), "sub $regA, $regC, $regB">;
+def SUB_C : FmtC<23, (outs GPRDst:$regA), (ins imm15:$imm, GPR:$regB), "sub $regA, #$imm, $regB">;
 
-def MUL : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "MUL $dst, $src1, $src2">;
+def : Pat<(sub GPR:$regC, GPR:$regB),
+          (SUB_B GPR:$regC, GPR:$regB)>;
+def : Pat<(sub imm:$imm, GPR:$regC),
+          (SUB_C imm:$imm, GPR:$regC)>;
 
-def DIV : MRISC32Inst<(outs GPR:$dst), 
-                      (ins GPR:$src1, GPR:$src2), 
-                      "DIV $dst, $src1, $src2">;
+def : GINodeEquiv<G_SUB, sub>;
 
+
+/***
+* MUL instruction
+* Opcode: 39
+* Format B and C
+***/
+def MUL_B : FmtB<39, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "mul $regA, $regB, $regC">;
+def MUL_C : FmtC<39, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "mul $regA, $regB, #$imm">;
+
+def : Pat<(mul GPR:$regB, GPR:$regC),
+          (MUL_B GPR:$regB, GPR:$regC)>;
+def : Pat<(mul GPR:$regB, imm:$imm),
+          (MUL_C GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_MUL, mul>;
+
+/***
+* DIV instruction
+* Opcode: 40
+* Format B and C
+***/
+def DIV_B : FmtB<40, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "div $regA, $regB, $regC">;
+def DIV_C : FmtC<40, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "div $regA, $regB, #$imm">;
+
+def : Pat<(sdiv GPR:$regB, GPR:$regC),
+          (DIV_B GPR:$regB, GPR:$regC)>;
+def : Pat<(sdiv GPR:$regB, imm:$imm),
+          (DIV_C GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_SDIV, sdiv>;
+
+
+/**
 // Return the minimum value of two signed integer operands.
 def MIN : MRISC32Inst<(outs GPR:$dst), 
                       (ins GPR:$src1, GPR:$src2), 
