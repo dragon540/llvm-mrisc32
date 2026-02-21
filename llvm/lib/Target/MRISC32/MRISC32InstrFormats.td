@@ -6,6 +6,7 @@ class MRISC32Inst<dag outs, dag ins, string asmString> : Instruction {
     field bits<32> Inst;
     let Namespace = "MRISC32";
     let AsmString = asmString;
+    let Size = 4;
 }
 
 def imm15 : Operand<i32> { let EncoderMethod = "getImmOpValue"; }

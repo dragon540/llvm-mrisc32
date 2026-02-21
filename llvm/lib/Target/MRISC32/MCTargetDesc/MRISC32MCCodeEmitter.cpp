@@ -102,9 +102,9 @@ void MRISC32MCCodeEmitter::encodeInstruction(const MCInst &MI,
                                            const MCSubtargetInfo &STI) const {
   // Get instruction encoding and emit it
   uint64_t Encoding = getBinaryCodeForInstr(MI, Fixups, STI);
-  assert(((Encoding & 0xffffffffffff0000) == 0) &&
-         "Only the first 16-bit should be set");
-  support::endian::write<uint16_t>(CB, Encoding, llvm::endianness::little);
+  assert(((Encoding & 0xffffffff00000000) == 0) &&
+         "Only the first 32-bit should be set");
+  support::endian::write<uint32_t>(CB, Encoding, llvm::endianness::little);
 }
 
 #include "MRISC32GenMCCodeEmitter.inc"
