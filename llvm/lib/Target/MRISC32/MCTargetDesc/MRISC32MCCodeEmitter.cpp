@@ -100,6 +100,13 @@ void MRISC32MCCodeEmitter::encodeInstruction(const MCInst &MI,
                                            SmallVectorImpl<char> &CB,
                                            SmallVectorImpl<MCFixup> &Fixups,
                                            const MCSubtargetInfo &STI) const {
+  if(MI.getOpcode() == MRISC32::RET)
+  {
+    uint32_t expInstrEnc = 0xc3c00000; // j lr, #0
+    support::endian::write<uint32_t>(CB, expInstrEnc, llvm::endianness::little);
+    return;
+  }
+
   // Get instruction encoding and emit it
   uint64_t Encoding = getBinaryCodeForInstr(MI, Fixups, STI);
   assert(((Encoding & 0xffffffff00000000) == 0) &&

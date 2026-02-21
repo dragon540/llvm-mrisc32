@@ -81,6 +81,63 @@ def : Pat<(srem GPR:$regB, imm:$imm),
 
 def : GINodeEquiv<G_SREM, srem>;
 
+/***
+* AND instruction
+* Opcode: 16
+* Format B and C
+***/
+def AND_B : FmtB<16, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "and $regA, $regB, $regC">;
+def AND_C : FmtC<16, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "and $regA, $regB, #$imm">;
+
+def : Pat<(and GPR:$regB, GPR:$regC),
+          (ADD_B GPR:$regB, GPR:$regC)>;
+def : Pat<(and GPR:$regB, imm:$imm),
+          (ADD_C GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_AND, and>;
+
+/***
+* OR instruction
+* Opcode: 17
+* Format B and C
+***/
+def OR_B : FmtB<17, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "or $regA, $regB, $regC">;
+def OR_C : FmtC<17, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "or $regA, $regB, #$imm">;
+
+def : Pat<(or GPR:$regB, GPR:$regC),
+          (OR_B GPR:$regB, GPR:$regC)>;
+def : Pat<(or GPR:$regB, imm:$imm),
+          (OR_C GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_OR, or>;
+
+/***
+* XOR instruction
+* Opcode: 18
+* Format B and C
+***/
+def XOR_B : FmtB<18, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "xor $regA, $regB, $regC">;
+def XOR_C : FmtC<18, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "xor $regA, $regB, #$imm">;
+
+def : Pat<(xor GPR:$regB, GPR:$regC),
+          (XOR_B GPR:$regB, GPR:$regC)>;
+def : Pat<(xor GPR:$regB, imm:$imm),
+          (XOR_C GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_XOR, xor>;
+
+/***
+* JUMP instruction
+* Opcode: 42
+* Format D
+def JUMP_D : FmtD<6, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "j $regA, $regB, #$imm">;
+
+def : Pat<(br GPR:$regB, imm:$imm),
+          (JUMP_D GPR:$regB, imm:$imm)>;
+
+def : GINodeEquiv<G_BR, br>;
+**/
+
 let isPseudo = 1, isCodeGenOnly = 1 in
 def ADJCALLSTACKUP   : MRISC32Inst<(outs), (ins), "adjstackup">;
 let isPseudo = 1, isCodeGenOnly = 1 in
