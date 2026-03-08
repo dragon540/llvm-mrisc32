@@ -161,6 +161,8 @@ def : Pat<(store i32:$regA, (add GPR:$regB, GPR:$regC)),
           (STW_B GPR:$regA, GPR:$regB, GPR:$regC)>;
 def : Pat<(store i32:$regA, (add GPR:$regB, imm:$imm)),
           (STW_C GPR:$regA, GPR:$regB, imm15:$imm)>;
+def : Pat<(st i32:$src, GPR:$addr), 
+          (STW_C GPR:$src, GPR:$addr, 0)>;
 
 def : GINodeEquiv<G_STORE, st>;
 
@@ -171,3 +173,19 @@ def : GINodeEquiv<G_CONSTANT, imm>;
 def LDW_B : FmtB<10, (outs GPRDst:$regA), (ins GPR:$regB, GPR:$regC), "ldw $regA, [$regB, $regC]">;
 def LDW_C : FmtC<10, (outs GPRDst:$regA), (ins GPR:$regB, imm15:$imm), "ldw $regA, [$regB, #$imm]">;
 
+def : Pat<(i32 (load (add GPR:$regB, imm:$imm))), 
+          (LDW_C GPR:$regB, imm:$imm)>;
+
+// Pattern for a simple load where offset is 0
+def : Pat<(i32 (load GPR:$addr)), 
+          (LDW_C GPR:$addr, 0)>;
+
+def : GINodeEquiv<G_LOAD, ld>;
+
+// Match a load where the address is a FrameIndex
+def : Pat<(i32 (load frameindex:$fi)),
+          (LDW_C $fi, 0)>;
+
+// Match a store where the address is a FrameIndex
+def : Pat<(st i32:$src, frameindex:$fi),
+          (STW_C i32:$src, $fi, 0)>;

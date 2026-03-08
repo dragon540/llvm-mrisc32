@@ -33,7 +33,13 @@ MRISC32FrameLowering::MRISC32FrameLowering(const MRISC32Subtarget &STI)
 void MRISC32FrameLowering::emitPrologue(MachineFunction &MF, MachineBasicBlock &MBB) const {
     MachineBasicBlock::iterator MBBI = MBB.begin();
     MachineFrameInfo &MFI = MF.getFrameInfo();
-    uint64_t stackSize = MFI.getStackSize();
+
+    uint64_t stackSize = alignTo(MFI.getStackSize(), getStackAlign());
+    MFI.setStackSize(stackSize);
+
+    if(stackSize == 0) {
+        return;
+    }
 
     DebugLoc DL;
 
@@ -60,7 +66,12 @@ void MRISC32FrameLowering::emitPrologue(MachineFunction &MF, MachineBasicBlock &
 void MRISC32FrameLowering::emitEpilogue(MachineFunction &MF, MachineBasicBlock &MBB) const {
     MachineBasicBlock::iterator MBBI = MBB.getFirstTerminator();
     MachineFrameInfo &MFI = MF.getFrameInfo();
+    
     uint64_t stackSize = MFI.getStackSize();
+
+    if(stackSize == 0) {
+        return;
+    }
     
     DebugLoc DL;
 

@@ -62,12 +62,41 @@ MRISC32InstructionSelector::MRISC32InstructionSelector(
 }
 
 bool MRISC32InstructionSelector::select(MachineInstr &I) {
-  // Certain non-generic instructions also need some special handling.
   if (!isPreISelGenericOpcode(I.getOpcode()))
     return true;
 
+  unsigned Opcode = I.getOpcode();
+  MachineRegisterInfo &MRI = I.getMF()->getRegInfo();
+
+  // MANUALLY FORCE FOLDING FOR MEMORY OPS
+  if (Opcode == TargetOpcode::G_LOAD || Opcode == TargetOpcode::G_STORE) {
+    Register AddrReg = I.getOperand(1).getReg();
+    MachineInstr *AddrDef = MRI.getVRegDef(AddrReg);
+
+    // If the address is a G_FRAME_INDEX, merge it into this instruction
+    if (AddrDef && AddrDef->getOpcode() == TargetOpcode::G_FRAME_INDEX) {
+      int FI = AddrDef->getOperand(1).getIndex();
+      unsigned NewOpc = (Opcode == TargetOpcode::G_STORE) ? MRISC32::STW_C : MRISC32::LDW_C;
+      
+      I.setDesc(TII.get(NewOpc));
+      I.getOperand(1).ChangeToFrameIndex(FI);
+      I.addOperand(MachineOperand::CreateImm(0)); // Placeholder for eliminateFrameIndex
+      
+      return constrainSelectedInstRegOperands(I, TII, TRI, RBI);
+    }
+  }
+
   if (selectImpl(I, *CoverageInfo))
     return true;
+
+  // FALLBACK FOR REMAINING FRAME_INDEX (Materialization)
+  if (Opcode == TargetOpcode::G_FRAME_INDEX) {
+    int FI = I.getOperand(1).getIndex();
+    I.setDesc(TII.get(MRISC32::ADD_C));
+    I.getOperand(1).ChangeToFrameIndex(FI);
+    I.addOperand(MachineOperand::CreateImm(0));
+    return constrainSelectedInstRegOperands(I, TII, TRI, RBI);
+  }
 
   return false;
 }

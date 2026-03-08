@@ -42,11 +42,25 @@ Register MRISC32RegisterInfo::getFrameRegister(const MachineFunction &MF) const 
 
 bool MRISC32RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator MI, int SPAdj,
                                               unsigned FIOperandNum,
-                                              RegScavenger *RS = nullptr) const {
+                                              RegScavenger *RS = nullptr) const 
+{
+    MachineInstr &MInstr = *MI;
+    MachineFunction &MF = *MInstr.getParent()->getParent();
+    const MachineFrameInfo &MFI = MF.getFrameInfo();
+    
+    // Get the Frame Index and the stack offset
+    int FrameIndex = MInstr.getOperand(FIOperandNum).getIndex();
+    int Offset = MFI.getObjectOffset(FrameIndex) + MFI.getStackSize() +
+                MInstr.getOperand(FIOperandNum + 1).getImm();
 
+    // Register being used as the base (Stack Pointer register here)
+    Register BaseReg = MRISC32::r29;
+
+    // Update the instruction
+    // Assuming the add immediate is: ADDI $dst, $base, $offset
+    MInstr.getOperand(FIOperandNum).ChangeToRegister(BaseReg, false);
+    MInstr.getOperand(FIOperandNum + 1).ChangeToImmediate(Offset);
     // For now: leave unimplemented stub that returns false
-    llvm_unreachable("eliminateFrameIndex not yet implemented");
+    //llvm_unreachable("eliminateFrameIndex not yet implemented");
     return false;
 }
-
-
