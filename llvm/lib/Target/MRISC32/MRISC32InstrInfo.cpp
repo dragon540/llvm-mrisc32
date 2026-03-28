@@ -52,12 +52,10 @@ void MRISC32InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
                                            const TargetRegisterInfo *TRI,
                                            Register VReg,
                                            MachineInstr::MIFlag Flag) const {
-  // We may have to define some kind of store instruction before building this
-  // Something to replace STri                                          
-  BuildMI(MBB, I, DebugLoc(), get(MRISC32::LI))
+  BuildMI(MBB, I, DebugLoc(), get(MRISC32::STW_C))
       .addReg(SrcReg, getKillRegState(isKill))
       .addFrameIndex(FrameIndex)
-      .addImm(0); // offset
+      .addImm(0);
 }
 
 void MRISC32InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB,
@@ -67,9 +65,7 @@ void MRISC32InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB,
                                             const TargetRegisterInfo *TRI,
                                             Register VReg,
                                             MachineInstr::MIFlag Flag) const {
-  // We may have to define some kind of load instruction before building this
-  // Something to replace LDri          
-  BuildMI(MBB, I, DebugLoc(), get(MRISC32::LI), DestReg)
+  BuildMI(MBB, I, DebugLoc(), get(MRISC32::LDW_C), DestReg)
       .addFrameIndex(FrameIndex)
       .addImm(0); // offset
 }
