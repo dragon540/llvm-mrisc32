@@ -50,19 +50,19 @@ func:
 	stw fp, [sp, #20]
 	add fp, sp, #24
 	ldi r3, #9
-	stw r1, [sp, #16]
-	stw r2, [sp, #12]
-	ldw r1, [sp, #16]
-	ldw r2, [sp, #12]
+	stw r1, [fp, #-8]
+	stw r2, [fp, #-12]
+	ldw r1, [fp, #-8]
+	ldw r2, [fp, #-12]
 	add r1, r1, r2
-	stw r1, [sp, #8]
-	ldw r1, [sp, #8]
+	stw r1, [fp, #-16]
+	ldw r1, [fp, #-16]
 	sub r1, r1, r3
-	stw r1, [sp, #4]
-	ldw r1, [sp, #4]
+	stw r1, [fp, #-20]
+	ldw r1, [fp, #-20]
 	div r1, r1, #7
-	stw r1, [sp, #0]
-	ldw r1, [sp, #0]
+	stw r1, [fp, #-24]
+	ldw r1, [fp, #-24]
 	ldw fp, [sp, #20]
 	add sp, sp, #24
 	ret

@@ -33,6 +33,8 @@ BitVector MRISC32RegisterInfo::getReservedRegs(const MachineFunction &MF) const 
     BitVector Reserved(getNumRegs());
     // Example: Reserve R0 if R0 is hardwired to zero
     Reserved.set(MRISC32::r0); 
+    Reserved.set(MRISC32::r28); // Frame pointer
+    Reserved.set(MRISC32::r29); // Stack pointer
     return Reserved;
 }
 
@@ -48,16 +50,13 @@ bool MRISC32RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator MI, in
     MachineFunction &MF = *MInstr.getParent()->getParent();
     const MachineFrameInfo &MFI = MF.getFrameInfo();
     
-    // Get the Frame Index and the stack offset
+    // Get the Frame Index and the frame offset
     int FrameIndex = MInstr.getOperand(FIOperandNum).getIndex();
-    int Offset = MFI.getObjectOffset(FrameIndex) + MFI.getStackSize() +
-                MInstr.getOperand(FIOperandNum + 1).getImm();
+    int Offset = MFI.getObjectOffset(FrameIndex) + MInstr.getOperand(FIOperandNum + 1).getImm();
 
-    // Register being used as the base (Stack Pointer register here)
-    Register BaseReg = MRISC32::r29;
+    // Register being used as the base (Frame Pointer register here)
+    Register BaseReg = MRISC32::r28;
 
-    // Update the instruction
-    // Assuming the add immediate is: ADDI $dst, $base, $offset
     MInstr.getOperand(FIOperandNum).ChangeToRegister(BaseReg, false);
     MInstr.getOperand(FIOperandNum + 1).ChangeToImmediate(Offset);
     // For now: leave unimplemented stub that returns false
